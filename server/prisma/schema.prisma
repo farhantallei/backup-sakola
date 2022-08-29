@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  avatarUrl    String?
+  city         String
+  instagram    String?
+  twitter      String?
+  facebook     String?
+  youtube      String?
+  linkedin     String?
+  websiteUrl   String?
+  createdAt    DateTime @default(now())
+  lastLogin    DateTime @updatedAt
+  courses      Course[]
+}
+
+enum SubjectCategory {
+  islam
+  dunia
+}
+
+model Subject {
+  id       String          @id @default(cuid())
+  name     String          @unique
+  category SubjectCategory
+  courses  Course[]
+}
+
+enum CourseLevel {
+  pemula
+  menengah
+  lanjutan
+}
+
+model Course {
+  id           String       @id @default(cuid())
+  author       Author       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  subject      Subject?     @relation(fields: [subjectId], references: [id])
+  authorId     String
+  subjectId    String?
+  title        String
+  description  String?
+  thumbnailUrl String?
+  level        CourseLevel?
+  published    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  publishedAt  DateTime?
+  // courseReferences    CourseReference[]
+  // courseObjectives    CourseObjective[]
+  // coursePrerequisites CoursePrerequisite[]
+
+  @@index([authorId])
+}
+
+// model CourseReference {
+//   course       Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+//   courseId     String
+//   index        Int     @db.SmallInt
+//   author       String  @db.VarChar(75)
+//   title        String  @db.VarChar(100)
+//   publishedOn  Int     @db.SmallInt
+//   referenceUrl String? @db.VarChar(255)
+
+//   @@id([courseId, index])
+//   @@index([courseId])
+// }
+
+// model CourseObjective {
+//   course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+//   courseId  String
+//   index     Int    @db.SmallInt
+//   objective String @db.VarChar(100)
+
+//   @@id([courseId, index])
+//   @@index([courseId])
+// }
+
+// model CoursePrerequisite {
+//   course       Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+//   courseId     String
+//   index        Int    @db.SmallInt
+//   prerequisite String @db.VarChar(100)
+
+//   @@id([courseId, index])
+//   @@index([courseId])
+// }
