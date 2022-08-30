@@ -28,7 +28,8 @@ export function Submit({ isLoading }: SubmitProps) {
           'hover:bg-blue-700 dark:hover:bg-slate-900',
           'focus:outline-none',
           'focus:ring-2',
-          'focus:ring-blue-500 dark:focus:ring-slate-500'
+          'focus:ring-blue-500 dark:focus:ring-slate-500',
+          'transition-colors'
         )}>
         {isLoading ? <Loader /> : 'Masuk'}
       </button>

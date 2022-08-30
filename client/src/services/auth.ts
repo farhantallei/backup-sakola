@@ -1,12 +1,16 @@
-import { LoginForm } from '@app/types';
+import {
+  LoginRequest,
+  LoginResponse,
+  RefreshTokenResponse,
+} from '@app/types/rest';
 import { makeRequest } from './makeRequest';
 
 const prefix = 'auth';
 
-export function login({ username, password }: LoginForm) {
-  return makeRequest<{ token: string }, LoginForm>(`${prefix}/login`, {
+export function login(data: LoginRequest) {
+  return makeRequest<LoginResponse, LoginRequest>(`${prefix}/login`, {
     method: 'POST',
-    data: { username, password },
+    data,
   });
 }
 
@@ -17,7 +21,7 @@ export function logout() {
 }
 
 export function refreshToken() {
-  return makeRequest<{ token: string }>(`${prefix}/refreshToken`, {
+  return makeRequest<RefreshTokenResponse>(`${prefix}/refreshToken`, {
     method: 'POST',
   });
 }

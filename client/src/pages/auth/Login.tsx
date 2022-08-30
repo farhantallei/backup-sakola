@@ -40,7 +40,7 @@ export function Login() {
           </div>
           <div className="flex items-center justify-end">
             <div className="text-sm">
-              <a className="font-medium text-blue-600 dark:text-slate-800 dark:font-semibold hover:text-blue-500 dark:hover:text-slate-900 cursor-default">
+              <a className="font-medium text-blue-600 dark:text-slate-300 dark:font-semibold hover:text-blue-500 dark:hover:text-slate-200 cursor-default">
                 Lupa password?
               </a>
             </div>

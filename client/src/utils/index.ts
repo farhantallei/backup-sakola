@@ -13,8 +13,8 @@ export function toCapitalize(string: string): string {
  * Add multiple classnames (separate using space) to a single element.
  *
  * @param el Any HTML Element
- * @example addClassName(document.body, "foo bar")
  * @param classNames Class names use space
+ * @example addClassName(document.body, "foo bar")
  */
 export function addClassName(el: HTMLElement, classNames: string): void {
   classNames.split(' ').forEach((className) => {

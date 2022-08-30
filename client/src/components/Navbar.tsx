@@ -1,8 +1,10 @@
+import { useLogout } from '@app/features/auth/hooks';
 import classNames from 'classnames';
 import { useState } from 'react';
 
 export function Navbar() {
   const [active, setActive] = useState(false);
+  const { logout } = useLogout();
 
   return (
     <nav className="bg-gray-800">
@@ -31,6 +33,8 @@ export function Navbar() {
                   id="user-menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
+                  // TODO:  Add event listener to document when open the menu
+                  //        for close the menu when user clicked on somewhere else.
                   onClick={() => setActive((prev) => !prev)}>
                   <span className="sr-only">Open user menu</span>
                   <img
@@ -51,28 +55,26 @@ export function Navbar() {
                 aria-labelledby="user-menu-button"
                 tabIndex={-1}>
                 <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-black hover:bg-opacity-5"
                   role="menuitem"
                   tabIndex={-1}
                   id="user-menu-item-0">
                   Your Profile
                 </a>
                 <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-black hover:bg-opacity-5"
                   role="menuitem"
                   tabIndex={-1}
                   id="user-menu-item-1">
                   Settings
                 </a>
                 <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700"
+                  className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-black hover:bg-opacity-5"
                   role="menuitem"
                   tabIndex={-1}
-                  id="user-menu-item-2">
-                  Sign out
+                  id="user-menu-item-2"
+                  onClick={logout}>
+                  Logout
                 </a>
               </div>
             </div>

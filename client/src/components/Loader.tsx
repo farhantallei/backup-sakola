@@ -1,4 +1,4 @@
-import { TwColor } from '@app/types';
+import { TwColor } from '@app/types/tailwind';
 import classNames from 'classnames';
 import { forwardRef } from 'react';
 
