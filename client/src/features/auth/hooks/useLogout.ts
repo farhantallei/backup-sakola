@@ -4,7 +4,9 @@ import { logout as logoutFn } from '@app/services/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-export function useLogout() {
+// TODO:  add Login result type conditionally.
+// REF:   useCourseList.ts
+function useLogout() {
   const { dispatch } = useClient();
   const navigate = useNavigate();
 
@@ -22,3 +24,5 @@ export function useLogout() {
 
   return { logout, error: error as string, isError, isLoading };
 }
+
+export default useLogout;

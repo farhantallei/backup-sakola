@@ -1,12 +1,8 @@
+import { api } from '@app/client';
 import { FastifyError } from '@app/types/rest';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-export const api = axios.create({
-  baseURL: `${import.meta.env.VITE_SERVER_URL}/api/guru`,
-  withCredentials: true,
-});
-
-export async function makeRequest<Response = any, Params = any>(
+async function makeRequest<Response = any, Params = any>(
   url: string,
   options?: AxiosRequestConfig<Params>
 ) {
@@ -20,3 +16,5 @@ export async function makeRequest<Response = any, Params = any>(
     return Promise.reject((err.response.data as FastifyError).message);
   }
 }
+
+export default makeRequest;

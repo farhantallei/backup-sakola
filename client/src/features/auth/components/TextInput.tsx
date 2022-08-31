@@ -6,7 +6,7 @@ interface TextInputProps {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export function TextInput({ type, onChange }: TextInputProps) {
+function TextInput({ type, onChange }: TextInputProps) {
   return (
     <div>
       <label htmlFor={type} className="sr-only">
@@ -42,3 +42,5 @@ export function TextInput({ type, onChange }: TextInputProps) {
     </div>
   );
 }
+
+export default TextInput;

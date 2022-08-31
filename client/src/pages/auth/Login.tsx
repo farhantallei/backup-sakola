@@ -1,11 +1,14 @@
 import { FullScreen } from '@app/layouts';
-import { LoginForm } from '@app/types';
+import { LoginRequest } from '@app/types/rest';
 import { Submit, TextInput } from '@auth/components';
 import { useLogin } from '@auth/hooks';
 import { useState } from 'react';
 
-export function Login() {
-  const [form, setForm] = useState<LoginForm>({ username: '', password: '' });
+function Login() {
+  const [form, setForm] = useState<LoginRequest>({
+    username: '',
+    password: '',
+  });
   const { login, error, isError, isLoading } = useLogin();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -51,3 +54,5 @@ export function Login() {
     </FullScreen>
   );
 }
+
+export default Login;

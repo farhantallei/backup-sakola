@@ -9,6 +9,8 @@ export default defineConfig({
     alias: {
       '@app': path.resolve(__dirname, './src'),
       '@auth': path.resolve(__dirname, './src/features/auth'),
+      '@course': path.resolve(__dirname, './src/features/course'),
+      '@pagination': path.resolve(__dirname, './src/features/pagination'),
     },
   },
   server: {

@@ -2,7 +2,7 @@ import { useLogout } from '@app/features/auth/hooks';
 import classNames from 'classnames';
 import { useState } from 'react';
 
-export function Navbar() {
+function Navbar() {
   const [active, setActive] = useState(false);
   const { logout } = useLogout();
 
@@ -84,3 +84,5 @@ export function Navbar() {
     </nav>
   );
 }
+
+export default Navbar;

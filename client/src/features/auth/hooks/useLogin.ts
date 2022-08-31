@@ -5,7 +5,9 @@ import { LoginRequest } from '@app/types/rest';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export function useLogin() {
+// TODO:  add Login result type conditionally.
+// REF:   useCourseList.ts
+function useLogin() {
   const { dispatch } = useClient();
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,3 +28,5 @@ export function useLogin() {
 
   return { login, error: error as string, isError, isLoading };
 }
+
+export default useLogin;

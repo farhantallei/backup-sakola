@@ -5,7 +5,7 @@ interface SubmitProps {
   isLoading: boolean;
 }
 
-export function Submit({ isLoading }: SubmitProps) {
+function Submit({ isLoading }: SubmitProps) {
   return (
     <div>
       <button
@@ -36,3 +36,5 @@ export function Submit({ isLoading }: SubmitProps) {
     </div>
   );
 }
+
+export default Submit;

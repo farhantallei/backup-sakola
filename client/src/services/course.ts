@@ -1,5 +1,5 @@
 import { GetCoursesRequest, GetCoursesResponse } from '@app/types/rest';
-import { makeRequest } from './makeRequest';
+import makeRequest from './makeRequest';
 
 const prefix = 'courses';
 

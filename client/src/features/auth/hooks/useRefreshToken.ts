@@ -3,7 +3,7 @@ import { AUTH_ACTION_TYPES } from '@app/constants';
 import { refreshToken as refreshTokenFn } from '@app/services/auth';
 import { useMutation } from '@tanstack/react-query';
 
-export function useRefreshToken() {
+function useRefreshToken() {
   const { setHeader, dispatch } = useClient();
 
   const minute = 1000 * 60;
@@ -29,3 +29,5 @@ export function useRefreshToken() {
     refetchToken: tokenExpireTime - minute,
   };
 }
+
+export default useRefreshToken;

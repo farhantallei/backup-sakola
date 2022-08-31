@@ -4,7 +4,7 @@ import { useRefreshToken } from '@auth/hooks';
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-export function RestrictedRoute() {
+function RestrictedRoute() {
   const { isAuthenticated } = useClient();
   const { refreshToken, refetchToken } = useRefreshToken();
   const location = useLocation();
@@ -24,3 +24,5 @@ export function RestrictedRoute() {
     </>
   );
 }
+
+export default RestrictedRoute;
