@@ -4,6 +4,7 @@ export interface AuthAction {
   type: AUTH_ACTION_TYPES;
 }
 
+// TODO: Change isAuthenticated to profile. Change boolean to profile data.
 interface AuthState {
   isAuthenticated: boolean | null;
 }

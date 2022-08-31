@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // TODO:  add Login result type conditionally.
 // REF:   useCourseList.ts
 function useLogin() {
-  const { dispatch } = useClient();
+  const { setHeader, dispatch } = useClient();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,7 +16,8 @@ function useLogin() {
 
   const { mutate, error, isError, isLoading } = useMutation({
     mutationFn: (form: LoginRequest) => loginFn(form),
-    onSuccess: () => {
+    onSuccess: ({ token }) => {
+      setHeader(token);
       dispatch({ type: AUTH_ACTION_TYPES.LOGIN });
       navigate(from || '/dashboard', { replace: true });
     },

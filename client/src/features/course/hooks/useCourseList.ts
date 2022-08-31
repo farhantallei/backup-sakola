@@ -27,6 +27,7 @@ function useCourseList(currentPage: number, limit: number) {
       queryKey: nextPageKey,
       queryFn: () => getCourses({ page: nextPage, limit }),
       cacheTime: Infinity,
+      retry: 3,
     });
   }, []);
 
