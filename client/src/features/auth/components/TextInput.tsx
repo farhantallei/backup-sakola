@@ -1,4 +1,4 @@
-import { toCapitalize } from '@app/utils';
+import { toSentenceCase } from '@app/utils';
 import classNames from 'classnames';
 
 interface TextInputProps {
@@ -10,13 +10,13 @@ function TextInput({ type, onChange }: TextInputProps) {
   return (
     <div>
       <label htmlFor={type} className="sr-only">
-        {toCapitalize(type)}
+        {toSentenceCase(type)}
       </label>
       <input
         id={type}
         name={type}
         type={type === 'password' ? 'password' : 'text'}
-        placeholder={toCapitalize(type)}
+        placeholder={toSentenceCase(type)}
         onChange={onChange}
         className={classNames(
           'appearance-none',

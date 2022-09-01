@@ -10,6 +10,7 @@ async function makeRequest<Response = any, Params = any>(
     const res: AxiosResponse<Response, Params> = await api(url, options);
     return res.data;
   } catch (err) {
+    // DELETE: remove console warn on production mode.
     console.warn(err);
     if (!axios.isAxiosError(err) || !err.response?.data)
       return Promise.reject('Internal service error');

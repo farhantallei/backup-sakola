@@ -1,2 +1,2 @@
-export { default as addClassName } from './addClassName';
-export { default as toCapitalize } from './toCapitalize';
+export { default as addClassName } from './addClassName/addClassName';
+export { default as toSentenceCase } from './toSentenceCase/toSentenceCase';

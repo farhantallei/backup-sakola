@@ -14,6 +14,7 @@ export function ReactQueryProvider({ children }: ReactQueryProviderProps) {
   return (
     <Provider client={queryClient}>
       {children}
+      {/* DELETE: Remove below element on production mode */}
       <ReactQueryDevtools />
     </Provider>
   );
