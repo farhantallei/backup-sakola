@@ -10,6 +10,7 @@ function Submit({ isLoading }: SubmitProps) {
     <div>
       <button
         type="submit"
+        disabled={isLoading}
         className={classNames(
           'group',
           'relative',
@@ -29,7 +30,9 @@ function Submit({ isLoading }: SubmitProps) {
           'focus:outline-none',
           'focus:ring-2',
           'focus:ring-blue-500 dark:focus:ring-slate-500',
-          'transition-colors'
+          'transition-colors',
+          'mt-4 md:mt-0',
+          'disabled:bg-blue-400 dark:disabled:bg-slate-800 dark:disabled:opacity-50'
         )}>
         {isLoading ? <Loader /> : 'Masuk'}
       </button>

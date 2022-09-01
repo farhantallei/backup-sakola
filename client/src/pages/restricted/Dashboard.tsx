@@ -1,5 +1,6 @@
 import { Loader } from '@app/components';
 import { FullScreen } from '@app/layouts';
+import { Badge } from '@course/components';
 import { useCourseList } from '@course/hooks';
 import { Pagination } from '@pagination/components';
 import { useState } from 'react';
@@ -17,7 +18,11 @@ function Dashboard() {
           {isLoading ? (
             <Loader />
           ) : isError ? (
-            <>{error}</>
+            error instanceof Error ? (
+              <span>{error.message}</span>
+            ) : (
+              <span>Something goes wrong. Please refresh your page.</span>
+            )
           ) : (
             <>
               <ul role="list" className="divide-y divide-gray-200">
@@ -29,13 +34,8 @@ function Dashboard() {
                           <div className="text-sm font-medium text-indigo-600 truncate">
                             {course.title}
                           </div>
-                          {/* TODO: 1. Create a badge component use below element
-                                    2. Change the value into new (green color) or updated (indigo color)
-                          */}
                           <div className="ml-2 flex-shrink-0 flex">
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                              Fulltime
-                            </span>
+                            <Badge type="new" />
                           </div>
                         </div>
                         <div className="mt-2 flex justify-between">
@@ -65,7 +65,11 @@ function Dashboard() {
                     className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-300">
                     Previous
                   </button>
-                  {/* TODO: Add current page indicator. */}
+                  <div className="self-center text-sm text-gray-700 ">
+                    <span className="font-semibold">{currentPage}</span>
+                    {' / '}
+                    <span className="font-semibold">{data.page.total}</span>
+                  </div>
                   <button
                     type="button"
                     disabled={data.page.next <= 0}

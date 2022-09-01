@@ -11,7 +11,6 @@ const app = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 export function addPlugins() {
   app.register(fastifyCookie, { secret: COOKIE_SECRET });
-  // TODO: Create two secret, for refresh token and access token.
   app.register(fastifyJwt, { secret: JWT_SECRET, jwtDecode: true });
   app.register(fastifyCors, {
     credentials: true,

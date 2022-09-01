@@ -12,6 +12,9 @@ function RestrictedRoute() {
   useEffect(() => {
     if (isAuthenticated) return;
     refreshToken();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(refreshToken, refetchToken);
     return () => clearInterval(interval);
   }, []);

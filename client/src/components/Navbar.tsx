@@ -1,10 +1,26 @@
 import { useLogout } from '@app/features/auth/hooks';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Navbar() {
-  const [active, setActive] = useState(false);
-  const { logout } = useLogout();
+  const [activeMenu, setActiveMenu] = useState(false);
+  const { mutate } = useLogout();
+
+  useEffect(() => {
+    if (activeMenu)
+      document.addEventListener('click', () => setActiveMenu(false), {
+        once: true,
+      });
+  }, [activeMenu]);
+
+  function handleMenu(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.stopPropagation();
+    setActiveMenu((prev) => !prev);
+  }
+
+  function handleLogout() {
+    mutate();
+  }
 
   return (
     <nav className="bg-gray-800">
@@ -33,9 +49,7 @@ function Navbar() {
                   id="user-menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  // TODO:  Add event listener to document when open the menu
-                  //        for close the menu when user clicked on somewhere else.
-                  onClick={() => setActive((prev) => !prev)}>
+                  onClick={handleMenu}>
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="h-8 w-8 rounded-full"
@@ -47,7 +61,7 @@ function Navbar() {
 
               <div
                 className={classNames(
-                  !active && 'hidden',
+                  !activeMenu && 'hidden',
                   'origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
                 )}
                 role="menu"
@@ -73,7 +87,7 @@ function Navbar() {
                   role="menuitem"
                   tabIndex={-1}
                   id="user-menu-item-2"
-                  onClick={logout}>
+                  onClick={handleLogout}>
                   Logout
                 </a>
               </div>

@@ -3,7 +3,7 @@ import { AuthorModel } from '../../../models';
 
 export const LoginSchema = {
   body: Type.Object({
-    username: AuthorModel.username,
+    username: AuthorModel.validation.username,
     password: Type.String({ minLength: 8 }),
   }),
   response: {

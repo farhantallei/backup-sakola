@@ -1,12 +1,9 @@
 import { useClient } from '@app/client';
 import { AUTH_ACTION_TYPES } from '@app/constants';
-import { login as loginFn } from '@app/services/auth';
-import { LoginRequest } from '@app/types/rest';
+import { login } from '@app/services/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-// TODO:  add Login result type conditionally.
-// REF:   useCourseList.ts
 function useLogin() {
   const { setHeader, dispatch } = useClient();
   const navigate = useNavigate();
@@ -14,20 +11,14 @@ function useLogin() {
 
   const from = (location.state as Location | null)?.pathname;
 
-  const { mutate, error, isError, isLoading } = useMutation({
-    mutationFn: (form: LoginRequest) => loginFn(form),
+  return useMutation({
+    mutationFn: login,
     onSuccess: ({ token }) => {
       setHeader(token);
       dispatch({ type: AUTH_ACTION_TYPES.LOGIN });
       navigate(from || '/dashboard', { replace: true });
     },
   });
-
-  function login(form: LoginRequest) {
-    mutate(form);
-  }
-
-  return { login, error: error as string, isError, isLoading };
 }
 
 export default useLogin;

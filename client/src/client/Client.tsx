@@ -20,6 +20,7 @@ function ClientProvider({ children }: ClientProviderProps) {
 
   const [client] = useState(api.interceptors);
 
+  // FIXME: The request header can't be changed by parameter variable. Replace with state manager.
   function setHeader(token: string) {
     client.request.use((config) => {
       config.headers!['Authorization'] = `Bearer ${token}`;
