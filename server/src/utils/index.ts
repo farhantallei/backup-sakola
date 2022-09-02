@@ -1,4 +1,5 @@
 import { FastifyReply } from 'fastify';
+import jwt from 'jsonwebtoken';
 import app from '../app';
 
 export async function commitToDB<T>(prisma: Promise<T>, reply?: FastifyReply) {
@@ -10,15 +11,22 @@ export async function commitToDB<T>(prisma: Promise<T>, reply?: FastifyReply) {
   return data;
 }
 
-export async function verifyToken<VerifyPayloadType extends object | string>(
+export function verifyToken(
   token: string,
+  secret: string,
   reply: FastifyReply
 ) {
-  try {
-    return await app.jwt.verify<VerifyPayloadType>(token);
-  } catch (err) {
-    const error = err as string;
-    reply.setCookie('jwt_token', '');
-    return reply.badRequest(error) as never;
-  }
+  let decodedToken: jwt.JwtPayload | undefined = undefined;
+
+  jwt.verify(token, secret, (error, decoded) => {
+    if (error) {
+      return reply.forbidden(error.message);
+    }
+    if (typeof decoded === 'string' || decoded == null) {
+      return reply.forbidden('Token is invalid');
+    }
+    decodedToken = decoded;
+  });
+
+  return decodedToken as unknown as jwt.JwtPayload;
 }

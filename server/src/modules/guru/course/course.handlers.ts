@@ -1,4 +1,4 @@
-import { AccessToken, RouteHandlerTypebox } from '../../../types';
+import { RouteHandlerTypebox } from '../../../types';
 import { GetCoursesTSchema } from './course.schemas';
 import { countCourses, getCourses } from './course.services';
 
@@ -7,9 +7,9 @@ export const GetCoursesHandler: RouteHandlerTypebox<GetCoursesTSchema> = async (
   reply
 ) => {
   const { page, limit } = request.query;
-  const { sub } = await request.jwtDecode<AccessToken>();
+  const authorId = request.author.id;
 
-  const courseLength = await countCourses(reply, { authorId: sub });
+  const courseLength = await countCourses(reply, { authorId });
   if (limit > courseLength)
     return reply.badRequest(`querystring/limit must be <= ${courseLength}`);
 
@@ -21,7 +21,7 @@ export const GetCoursesHandler: RouteHandlerTypebox<GetCoursesTSchema> = async (
   const endIndex = page * limit;
 
   const courses = await getCourses(reply, {
-    authorId: sub,
+    authorId,
     skip: startIndex,
     take: limit,
   });

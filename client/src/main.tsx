@@ -1,4 +1,3 @@
-import { ClientProvider } from '@app/client';
 import { ReactQueryProvider } from '@app/libs/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -10,9 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <ReactQueryProvider>
-        <ClientProvider>
-          <App />
-        </ClientProvider>
+        <App />
       </ReactQueryProvider>
     </BrowserRouter>
   </React.StrictMode>

@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { RefreshToken, RouteHandlerTypebox } from '../../../types';
+import jwt from 'jsonwebtoken';
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from '../../../env';
+import { RouteHandlerTypebox } from '../../../types';
 import { verifyToken } from '../../../utils';
 import { LoginTSchema, RefreshTokenTSchema } from './auth.schemas';
 import { getUser, login } from './auth.services';
@@ -16,20 +18,21 @@ export const LoginHandler: RouteHandlerTypebox<LoginTSchema> = async (
   const correctPassword = await bcrypt.compare(password, user.passwordHash);
   if (!correctPassword) return reply.badRequest('Invalid credentials');
 
-  const refreshToken = await reply.jwtSign(
-    {},
-    { sign: { sub: user.id, expiresIn: '3d' } }
-  );
+  const refreshToken = jwt.sign({}, REFRESH_TOKEN_SECRET, {
+    subject: user.id,
+    expiresIn: '3d',
+  });
+
   reply.setCookie('jwt_token', refreshToken, {
     signed: true,
     httpOnly: true,
     sameSite: true,
   });
 
-  const accessToken = await reply.jwtSign(
-    {},
-    { sign: { sub: user.id, expiresIn: '15m' } }
-  );
+  const accessToken = jwt.sign({}, ACCESS_TOKEN_SECRET, {
+    subject: user.id,
+    expiresIn: '15m',
+  });
 
   return await login(reply, { id: user.id }).then(() => ({
     token: accessToken,
@@ -45,25 +48,27 @@ export const RefreshTokenHandler: RouteHandlerTypebox<
   const { value: refreshToken } = reply.unsignCookie(signedRefreshToken);
   if (refreshToken == null) return reply.forbidden('Token is invalid');
 
-  const decodedRefreshToken = await verifyToken<RefreshToken>(
+  const decodedRefreshToken = verifyToken(
     refreshToken,
+    REFRESH_TOKEN_SECRET,
     reply
   );
 
-  const newRefreshToken = await reply.jwtSign(
-    {},
-    { sign: { sub: decodedRefreshToken.sub, expiresIn: '3d' } }
-  );
+  const newRefreshToken = jwt.sign({}, REFRESH_TOKEN_SECRET, {
+    subject: decodedRefreshToken.sub,
+    expiresIn: '3d',
+  });
+
   reply.setCookie('jwt_token', newRefreshToken, {
     signed: true,
     httpOnly: true,
     sameSite: true,
   });
 
-  const newAccessToken = await reply.jwtSign(
-    {},
-    { sign: { sub: decodedRefreshToken.sub, expiresIn: '15m' } }
-  );
+  const newAccessToken = jwt.sign({}, ACCESS_TOKEN_SECRET, {
+    subject: decodedRefreshToken.sub,
+    expiresIn: '15m',
+  });
 
   return { token: newAccessToken };
 };

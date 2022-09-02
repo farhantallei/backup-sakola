@@ -1,6 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type {
   ContextConfigDefault,
+  FastifySchema,
   preHandlerAsyncHookHandler,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -12,30 +13,17 @@ import type {
   RouteHandlerMethod,
 } from 'fastify/types/route';
 
-export interface AccessToken {
-  sub: string;
-  iat: number;
-  exp: number;
+declare module 'fastify' {
+  interface FastifyRequest {
+    author: {
+      id: string;
+    };
+  }
 }
 
-export interface RefreshToken {
-  sub: string;
-  iat: number;
-  exp: number;
-}
-
-export type RouteShorthandOptionsWithHandlerTypebox<TSchema> =
-  RouteShorthandOptionsWithHandler<
-    RawServerDefault,
-    RawRequestDefaultExpression<RawServerDefault>,
-    RawReplyDefaultExpression<RawServerDefault>,
-    RouteGenericInterface,
-    ContextConfigDefault,
-    TSchema,
-    TypeBoxTypeProvider
-  >;
-
-export type RouteHandlerTypebox<TSchema> = RouteHandlerMethod<
+export type RouteShorthandOptionsWithHandlerTypebox<
+  TSchema extends FastifySchema = FastifySchema
+> = RouteShorthandOptionsWithHandler<
   RawServerDefault,
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
@@ -44,3 +32,14 @@ export type RouteHandlerTypebox<TSchema> = RouteHandlerMethod<
   TSchema,
   TypeBoxTypeProvider
 >;
+
+export type RouteHandlerTypebox<TSchema extends FastifySchema = FastifySchema> =
+  RouteHandlerMethod<
+    RawServerDefault,
+    RawRequestDefaultExpression<RawServerDefault>,
+    RawReplyDefaultExpression<RawServerDefault>,
+    RouteGenericInterface,
+    ContextConfigDefault,
+    TSchema,
+    TypeBoxTypeProvider
+  >;

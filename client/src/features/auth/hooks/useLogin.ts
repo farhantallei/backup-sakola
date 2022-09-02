@@ -1,11 +1,9 @@
-import { useClient } from '@app/client';
-import { AUTH_ACTION_TYPES } from '@app/constants';
+import { setAccessToken } from '@app/client';
 import { login } from '@app/services/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 function useLogin() {
-  const { setHeader, dispatch } = useClient();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -14,8 +12,7 @@ function useLogin() {
   return useMutation({
     mutationFn: login,
     onSuccess: ({ token }) => {
-      setHeader(token);
-      dispatch({ type: AUTH_ACTION_TYPES.LOGIN });
+      setAccessToken(token);
       navigate(from || '/dashboard', { replace: true });
     },
   });

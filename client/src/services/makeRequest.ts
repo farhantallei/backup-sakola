@@ -1,6 +1,24 @@
-import { api } from '@app/client';
+import { getAccessToken } from '@app/client';
 import { FastifyError } from '@app/types/rest';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+
+const api = axios.create({
+  baseURL: `${import.meta.env.VITE_SERVER_URL}/api/guru`,
+  withCredentials: true,
+});
+
+api.interceptors.request.use(
+  (config) => {
+    const token = getAccessToken();
+    if (token) {
+      config.headers!['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 async function makeRequest<Response = any, Params = any>(
   url: string,

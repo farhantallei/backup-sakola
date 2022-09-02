@@ -1,22 +1,18 @@
-import { useClient } from '@app/client';
-import { AUTH_ACTION_TYPES } from '@app/constants';
+import { setAccessToken } from '@app/client';
 import { refreshToken as refreshTokenFn } from '@app/services/auth';
 import { useMutation } from '@tanstack/react-query';
 
 function useRefreshToken() {
-  const { setHeader, dispatch } = useClient();
-
   const minute = 1000 * 60;
   const tokenExpireTime = 15 * minute;
 
   const { mutate } = useMutation({
     mutationFn: refreshTokenFn,
     onError: () => {
-      dispatch({ type: AUTH_ACTION_TYPES.LOGOUT });
+      setAccessToken('');
     },
     onSuccess: ({ token }) => {
-      setHeader(token);
-      dispatch({ type: AUTH_ACTION_TYPES.LOGIN });
+      setAccessToken(token);
     },
   });
 
