@@ -1,21 +1,16 @@
-import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
-import Submit from './Submit';
-import TextInput from './TextInput';
+import { TextInput } from '@app/components';
 import { LoginRequest } from '@app/types/rest';
-import { useEffect } from 'react';
+import { DevTool } from '@hookform/devtools';
+import classNames from 'classnames';
+import { useForm } from 'react-hook-form';
+import Submit from './Submit';
 
 interface LoginFormProps {
   onSubmit: (form: LoginRequest) => void;
   isLoading?: boolean;
-  setErrorMessage?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function LoginForm({
-  onSubmit,
-  isLoading = false,
-  setErrorMessage,
-}: LoginFormProps) {
+function LoginForm({ onSubmit, isLoading = false }: LoginFormProps) {
   const {
     control,
     register,
@@ -23,59 +18,60 @@ function LoginForm({
     formState: { errors },
   } = useForm<LoginRequest>();
 
-  useEffect(() => {
-    if (!setErrorMessage) return;
-    if (!!errors.username) {
-      if (errors.username.message) {
-        setErrorMessage(errors.username.message);
-        return;
-      }
-    }
-    if (!!errors.password) {
-      if (errors.password.message) {
-        setErrorMessage(errors.password.message);
-        return;
-      }
-    }
-    setErrorMessage('');
-  }, [errors.username, errors.password]);
-
   return (
     <>
       <DevTool control={control} />
-      <form className="-mt-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mt-4 md:mt-0 rounded-md shadow-sm -space-y-px">
-          <TextInput
-            id="username"
-            type="text"
-            error={!!errors.username}
-            {...register('username', {
-              required: 'Username is required',
-              minLength: {
-                value: 3,
-                message: 'Username minimum length is 3 characters',
-              },
-            })}
-          />
-          <TextInput
-            id="password"
-            type="password"
-            error={!!errors.password}
-            {...register('password', {
-              required: 'Password is required',
-              minLength: {
-                value: 8,
-                message: 'Password minimum length is 8 characters',
-              },
-            })}
-          />
+      <form className="w-60 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-4">
+          <div>
+            <TextInput
+              id="username"
+              type="text"
+              placeholder="Username"
+              className={classNames('w-full', {
+                ['border-red-600']: !!errors.username,
+              })}
+              {...register('username', {
+                required: 'Username is required',
+                minLength: {
+                  value: 3,
+                  message: 'Username minimum length is 3 characters',
+                },
+              })}
+            />
+            {errors.username?.message ? (
+              <span className="text-sm text-red-500">
+                {errors.username.message}
+              </span>
+            ) : null}
+          </div>
+          <div>
+            <TextInput
+              id="password"
+              type="password"
+              placeholder="Password"
+              className={classNames('w-full', {
+                ['border-red-600']: !!errors.password,
+              })}
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 8,
+                  message: 'Password minimum length is 8 characters',
+                },
+              })}
+            />
+            {errors.password ? (
+              <span className="text-sm text-red-500">
+                {errors.password.message}
+              </span>
+            ) : null}
+          </div>
         </div>
         <div className="mt-4 md:mt-0 flex items-center justify-end">
-          <div className="text-sm">
-            <a className="font-medium text-blue-600 dark:text-slate-300 dark:font-semibold hover:text-blue-500 dark:hover:text-slate-200 cursor-default">
-              Lupa password?
-            </a>
-          </div>
+          <a className="text-sm font-medium text-sky-500 hover:text-sky-600  cursor-default">
+            Lupa password?
+          </a>
         </div>
         <Submit isLoading={isLoading} />
       </form>

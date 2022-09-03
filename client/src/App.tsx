@@ -1,5 +1,5 @@
 import { Login } from '@app/pages/auth';
-import { Dashboard } from '@app/pages/restricted';
+import { Course, Dashboard } from '@app/pages/restricted';
 import { AuthRoute, RestrictedRoute } from '@app/routes';
 import { addClassName } from '@app/utils';
 import { useEffect } from 'react';
@@ -11,9 +11,9 @@ function App() {
     const body = document.body;
     const root = document.getElementById('root')!;
 
-    addClassName(doc, 'h-full bg-white dark:bg-slate-700');
-    addClassName(body, 'h-full');
-    addClassName(root, 'h-full min-h-full flex flex-col');
+    addClassName(doc, 'bg-white');
+    addClassName(body, 'text-cyan-900');
+    addClassName(root, 'flex flex-col');
   }, []);
 
   return (
@@ -23,6 +23,7 @@ function App() {
       </Route>
       <Route element={<RestrictedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pelajaran/:courseId" element={<Course />} />
         <Route path="*" element={<h1>Not found</h1>} />
       </Route>
     </Routes>

@@ -1,5 +1,5 @@
 import { getAccessToken } from '@app/client';
-import { Navbar } from '@app/components';
+import { Navbar, Sidebar } from '@app/components';
 import { useRefreshToken } from '@auth/hooks';
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
@@ -24,7 +24,12 @@ function RestrictedRoute() {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <main className="flex flex-1 flex-row">
+        <Sidebar />
+        <section className="flex flex-1 flex-col bg-gray-50 min-h-[calc(100vh-4rem)] px-9 py-12">
+          <Outlet />
+        </section>
+      </main>
     </>
   );
 }
