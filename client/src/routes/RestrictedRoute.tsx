@@ -26,7 +26,7 @@ function RestrictedRoute() {
       <Navbar />
       <main className="flex flex-1 flex-row">
         <Sidebar />
-        <section className="flex flex-1 flex-col bg-gray-50 min-h-[calc(100vh-4rem)] px-9 py-12">
+        <section className="flex-1 bg-gray-50 min-h-[calc(100vh-4rem)] px-9 py-12">
           <Outlet />
         </section>
       </main>

@@ -1,13 +1,14 @@
 import { useLogout } from '@app/features/auth/hooks';
+import { IconPlus } from '@tabler/icons';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Avatar from './Avatar';
-import Badge from './Badge';
 import TextInput from './TextInput';
+import { ActionIcon, Avatar, Badge, SegmentedControl } from './ui';
 
 function Navbar() {
   const [activeMenu, setActiveMenu] = useState(false);
+  const [filterCategory, setFilterCategory] = useState('islam');
   const { mutate } = useLogout();
 
   useEffect(() => {
@@ -33,16 +34,30 @@ function Navbar() {
           to="/dashboard"
           className="flex items-center gap-2 text-2xl font-bold">
           sakola
-          <Badge className="relative top-px" size="md" color="sky">
+          <Badge className="relative top-px" size="base" color="sky">
             author
           </Badge>
         </Link>
       </div>
       <div className="flex flex-1 justify-between px-9">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <TextInput className="h-9" type="search" placeholder="Cari..." />
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
+          <SegmentedControl
+            value={filterCategory}
+            onChange={setFilterCategory}
+            data={[
+              { label: 'Islam', value: 'islam' },
+              { label: 'Dunia', value: 'dunia' },
+            ]}
+          />
+          <ActionIcon
+            Icon={IconPlus}
+            title="Add a new course"
+            size="lg"
+            color="gray"
+          />
           <div className="relative">
             <button type="button" title="Profile" onClick={handleMenu}>
               <Avatar />

@@ -1,4 +1,4 @@
-import { Badge as DefaultBadge } from '@app/components';
+import { Badge as DefaultBadge } from '@app/components/ui';
 
 interface BadgeProps {
   type: 'new' | 'update';

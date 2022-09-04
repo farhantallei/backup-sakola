@@ -4,6 +4,7 @@ import {
   IconHome,
   IconNote,
 } from '@tabler/icons';
+import { Divider } from './ui';
 
 // TODO: Responsive apple sidebar
 function Sidebar() {
@@ -36,7 +37,7 @@ function Sidebar() {
         </div>
       </section>
       <div className="px-10 my-6">
-        <hr className="border-t-2 border-gray-100 border-dashed" />
+        <Divider variant="dashed" />
       </div>
       <footer className="flex flex-col gap-4 pl-12">
         <a className="font-semibold text-gray-400 hover:text-gray-500">

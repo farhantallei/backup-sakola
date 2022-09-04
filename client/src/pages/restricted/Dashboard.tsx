@@ -1,4 +1,4 @@
-import { Loader } from '@app/components';
+import { Loader } from '@app/components/ui';
 import { Badge } from '@course/components';
 import { useCourseList } from '@course/hooks';
 import { Pagination } from '@pagination/components';
@@ -12,7 +12,7 @@ function Dashboard() {
   const { data, isLoading, isError, error } = useCourseList(currentPage, limit);
 
   return (
-    <div className="flex-1 flex flex-col justify-center w-full space-y-8">
+    <div className="flex flex-col justify-center h-full space-y-8">
       <div className="bg-white overflow-hidden shadow rounded-lg">
         {isLoading ? (
           <Loader dark />

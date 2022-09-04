@@ -20,9 +20,11 @@ export function verifyToken(
 
   jwt.verify(token, secret, (error, decoded) => {
     if (error) {
+      reply.setCookie('jwt_token', '');
       return reply.forbidden(error.message);
     }
     if (typeof decoded === 'string' || decoded == null) {
+      reply.setCookie('jwt_token', '');
       return reply.forbidden('Token is invalid');
     }
     decodedToken = decoded;
