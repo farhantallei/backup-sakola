@@ -64,6 +64,7 @@ export const CourseModel = {
       ])
     ),
     published: Type.Boolean(),
+    status: Type.Union([Type.Literal('berjalan'), Type.Literal('selesai')]),
     createdAt: Type.String({ format: 'date-time' }),
     updatedAt: Type.String({ format: 'date-time' }),
     publishedAt: Type.Optional(Type.String({ format: 'date-time' })),
@@ -75,6 +76,7 @@ export const CourseModel = {
     thumbnailUrl: Type.Union([Type.String(), Type.Null()]),
     level: Type.Union([Type.String(), Type.Null()]),
     published: Type.Boolean(),
+    status: Type.String(),
     createdAt: Type.String(),
     updatedAt: Type.String(),
     publishedAt: Type.Union([Type.String(), Type.Null()]),

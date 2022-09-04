@@ -21,7 +21,8 @@
       "@app/*": ["./*"],
       "@auth/*": ["./features/auth/*"],
       "@course/*": ["./features/course/*"],
-      "@pagination/*": ["./features/pagination/*"]
+      "@pagination/*": ["./features/pagination/*"],
+      "@sidebar": ["./features/sidebar/index.ts"]
     }
   },
   "include": ["src"],

@@ -22,7 +22,7 @@ function App() {
         <Route path="/" element={<Login />} />
       </Route>
       <Route element={<RestrictedRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/beranda" element={<Dashboard />} />
         <Route path="/pelajaran/:courseId" element={<Course />} />
         <Route path="*" element={<h1>Not found</h1>} />
       </Route>

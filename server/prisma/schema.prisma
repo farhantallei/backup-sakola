@@ -47,6 +47,11 @@ enum CourseLevel {
   lanjutan
 }
 
+enum CourseStatus {
+  berjalan
+  selesai
+}
+
 model Course {
   id           String       @id @default(cuid())
   author       Author       @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -58,6 +63,7 @@ model Course {
   thumbnailUrl String?
   level        CourseLevel?
   published    Boolean      @default(false)
+  status       CourseStatus @default(berjalan)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   publishedAt  DateTime?

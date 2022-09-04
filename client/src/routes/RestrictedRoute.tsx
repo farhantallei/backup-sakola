@@ -1,6 +1,8 @@
 import { getAccessToken } from '@app/client';
-import { Navbar, Sidebar } from '@app/components';
+import { Navbar } from '@app/components';
+import DashboardProvider from '@app/context/DashboardContext';
 import { useRefreshToken } from '@auth/hooks';
+import Sidebar from '@sidebar';
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
@@ -22,7 +24,7 @@ function RestrictedRoute() {
   if (accessToken == null) return null;
   if (!accessToken) return <Navigate to="/" state={location} replace />;
   return (
-    <>
+    <DashboardProvider>
       <Navbar />
       <main className="flex flex-1 flex-row">
         <Sidebar />
@@ -30,7 +32,7 @@ function RestrictedRoute() {
           <Outlet />
         </section>
       </main>
-    </>
+    </DashboardProvider>
   );
 }
 

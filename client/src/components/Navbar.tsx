@@ -1,3 +1,4 @@
+import { useDashboardContext } from '@app/context/DashboardContext';
 import { useLogout } from '@app/features/auth/hooks';
 import { IconPlus } from '@tabler/icons';
 import classNames from 'classnames';
@@ -8,6 +9,7 @@ import { ActionIcon, Avatar, Badge, SegmentedControl, TextInput } from './ui';
 function Navbar() {
   const [activeMenu, setActiveMenu] = useState(false);
   const [filterCategory, setFilterCategory] = useState('islam');
+  const { openSidebar } = useDashboardContext();
   const { mutate } = useLogout();
 
   useEffect(() => {
@@ -30,7 +32,8 @@ function Navbar() {
     <nav className="flex flex-row flex-shrink-0 basis-16 bg-white border-b sticky top-0 z-10 ">
       <div className="flex basis-80 items-center pl-12">
         <Link
-          to="/dashboard"
+          to="/beranda"
+          onClick={openSidebar}
           className="flex items-center gap-2 text-2xl font-bold">
           sakola
           <Badge className="relative top-px" size="base" color="sky">

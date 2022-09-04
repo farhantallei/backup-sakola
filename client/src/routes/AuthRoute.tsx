@@ -12,7 +12,7 @@ function AuthRoute() {
   }, []);
 
   if (accessToken == null) return null;
-  if (accessToken) return <Navigate to="/dashboard" replace />;
+  if (accessToken) return <Navigate to="/beranda" replace />;
   return <Outlet />;
 }
 

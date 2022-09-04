@@ -1,4 +1,4 @@
-import { getCourses } from '@app/services/course';
+import { getUnpublishedCourses } from '@app/services/course';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -7,7 +7,7 @@ function useCourseList(page: number, limit: number) {
 
   const courseList = useQuery({
     queryKey: ['courses', page],
-    queryFn: () => getCourses({ page, limit }),
+    queryFn: () => getUnpublishedCourses({ page, limit }),
     keepPreviousData: true,
     staleTime: Infinity,
     cacheTime: Infinity,
@@ -19,7 +19,7 @@ function useCourseList(page: number, limit: number) {
 
     queryClient.prefetchQuery({
       queryKey: nextPageKey,
-      queryFn: () => getCourses({ page: nextPage, limit }),
+      queryFn: () => getUnpublishedCourses({ page: nextPage, limit }),
       cacheTime: Infinity,
       retry: 3,
     });
@@ -36,7 +36,7 @@ function useCourseList(page: number, limit: number) {
     if (page > 1) {
       queryClient.prefetchQuery({
         queryKey: prevPageKey,
-        queryFn: () => getCourses({ page: prevPage, limit }),
+        queryFn: () => getUnpublishedCourses({ page: prevPage, limit }),
         cacheTime: Infinity,
       });
     }
@@ -53,7 +53,7 @@ function useCourseList(page: number, limit: number) {
     if (page < courseList.data.page.total) {
       queryClient.prefetchQuery({
         queryKey: nextPageKey,
-        queryFn: () => getCourses({ page: nextPage, limit }),
+        queryFn: () => getUnpublishedCourses({ page: nextPage, limit }),
         cacheTime: Infinity,
       });
     }

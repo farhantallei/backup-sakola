@@ -1,7 +1,7 @@
 import { Type } from '@sinclair/typebox';
-import { CourseModel } from '../../../models';
+import { CourseModel, SubjectModel } from '../../../models';
 
-export const GetCoursesSchema = {
+export const GetUnpublishedCoursesSchema = {
   querystring: Type.Object({
     page: Type.Number({ minimum: 1, multipleOf: 1 }),
     limit: Type.Number({ minimum: 1, multipleOf: 1 }),
@@ -18,9 +18,27 @@ export const GetCoursesSchema = {
         prev: Type.Number(),
         next: Type.Number(),
       }),
-      courses: Type.Array(Type.Object(CourseModel.response)),
+      courses: Type.Array(
+        Type.Object({
+          id: CourseModel.response.id,
+          title: CourseModel.response.title,
+          thumbnailUrl: CourseModel.response.thumbnailUrl,
+          level: CourseModel.response.level,
+          published: CourseModel.response.published,
+          status: CourseModel.response.status,
+          createdAt: CourseModel.response.createdAt,
+          updatedAt: CourseModel.response.updatedAt,
+          subject: Type.Union([
+            Type.Object({
+              name: SubjectModel.response.name,
+              category: SubjectModel.response.category,
+            }),
+            Type.Null(),
+          ]),
+        })
+      ),
     }),
   },
 };
 
-export type GetCoursesTSchema = typeof GetCoursesSchema;
+export type GetUnpublishedCoursesTSchema = typeof GetUnpublishedCoursesSchema;

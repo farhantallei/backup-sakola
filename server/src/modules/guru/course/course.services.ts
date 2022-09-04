@@ -2,32 +2,39 @@ import { FastifyReply } from 'fastify';
 import prisma from '../../../prisma';
 import { commitToDB } from '../../../utils';
 
-export async function countCourses(
+export async function countUnpublishedCourses(
   reply: FastifyReply,
   { authorId }: { authorId: string }
 ) {
-  return await commitToDB(prisma.course.count({ where: { authorId } }), reply);
+  return await commitToDB(
+    prisma.course.count({ where: { authorId, published: false } }),
+    reply
+  );
 }
 
-// TODO: Select only necessary data. Then update the response type on the client side.
-export async function getCourses(
+export async function getUnpublishedCourses(
   reply: FastifyReply,
   { authorId, skip, take }: { authorId: string; skip: number; take: number }
 ) {
   return await commitToDB(
     prisma.course.findMany({
-      where: { authorId },
+      where: { authorId, published: false },
       orderBy: { updatedAt: 'desc' },
       select: {
         id: true,
         title: true,
-        description: true,
         thumbnailUrl: true,
         level: true,
         published: true,
+        status: true,
         createdAt: true,
         updatedAt: true,
-        publishedAt: true,
+        subject: {
+          select: {
+            name: true,
+            category: true,
+          },
+        },
       },
       skip,
       take,

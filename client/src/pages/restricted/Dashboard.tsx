@@ -1,4 +1,5 @@
 import { Loader } from '@app/components/ui';
+import { useDashboardContext } from '@app/context/DashboardContext';
 import { Badge } from '@course/components';
 import { useCourseList } from '@course/hooks';
 import { Pagination } from '@pagination/components';
@@ -8,6 +9,7 @@ import { Link } from 'react-router-dom';
 function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(5);
+  const { closeSidebar } = useDashboardContext();
 
   const { data, isLoading, isError, error } = useCourseList(currentPage, limit);
 
@@ -29,6 +31,7 @@ function Dashboard() {
                 <li key={course.id}>
                   <Link
                     to={`/pelajaran/${course.id}`}
+                    onClick={closeSidebar}
                     className="block hover:bg-gray-50">
                     <div className="px-4 py-4 sm:px-6">
                       <div className="flex items-center justify-between">

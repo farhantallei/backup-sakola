@@ -13,6 +13,7 @@ export default defineConfig({
       '@auth': path.resolve(__dirname, './src/features/auth'),
       '@course': path.resolve(__dirname, './src/features/course'),
       '@pagination': path.resolve(__dirname, './src/features/pagination'),
+      '@sidebar': path.resolve(__dirname, './src/features/sidebar'),
     },
   },
   server: {

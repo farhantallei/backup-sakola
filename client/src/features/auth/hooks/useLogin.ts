@@ -7,13 +7,13 @@ function useLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as Location | null)?.pathname;
+  const from = (location.state as Location | null)?.pathname || '/beranda';
 
   return useMutation({
     mutationFn: login,
     onSuccess: ({ token }) => {
       setAccessToken(token);
-      navigate(from || '/dashboard', { replace: true });
+      navigate(from, { replace: true });
     },
   });
 }

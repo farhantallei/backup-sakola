@@ -9,16 +9,25 @@ export interface RefreshTokenResponse {
 export interface CourseResponse {
   id: string;
   title: string;
-  description: string | null;
   thumbnailUrl: string | null;
   level: 'pemula' | 'menengah' | 'lanjutan' | null;
   published: boolean;
+  status: 'berjalan' | 'selesai';
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
+  subject: {
+    name: string;
+    category: string;
+  } | null;
 }
 
-export interface GetCoursesResponse {
+export interface UnpublishedCourseResponse
+  extends Omit<CourseResponse, 'publishedAt'> {
+  published: false;
+}
+
+export interface GetUnpublishedCoursesResponse {
   count: {
     total: number;
     prev: number;
@@ -29,7 +38,7 @@ export interface GetCoursesResponse {
     prev: number;
     next: number;
   };
-  courses: CourseResponse[];
+  courses: UnpublishedCourseResponse[];
 }
 
 export interface FastifyError {

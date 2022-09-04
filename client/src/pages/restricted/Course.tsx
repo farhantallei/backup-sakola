@@ -1,9 +1,11 @@
 import placeholderImage from '@app/assets/images/placeholder-image.png';
 import { Text, Title } from '@app/components/typography';
 import { ActionIcon, Badge, Divider } from '@app/components/ui';
+import { useDashboardContext } from '@app/context/DashboardContext';
 import { AspectRatio } from '@app/layouts';
 import {
   IconArrowsExchange,
+  IconLayoutSidebar,
   IconPencil,
   IconPlus,
   IconRocket,
@@ -12,12 +14,21 @@ import {
 import { useParams } from 'react-router-dom';
 
 function Course() {
+  const { toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };
 
   return (
     <div className="flex flex-col gap-4">
+      <ActionIcon
+        Icon={IconLayoutSidebar}
+        title="Toggle sidebar"
+        onClick={toggleSidebar}
+      />
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex flex-row gap-2">
+          <Badge variant="dot" color="green">
+            selesai
+          </Badge>
           <Badge variant="dot" color="amber">
             published
           </Badge>
@@ -30,15 +41,15 @@ function Course() {
         <div className="flex items-center">Matematika Dasar</div>
         <div className="flex items-center gap-2">
           <button type="button" className="text-sky-500">
-            Edit
+            Done
           </button>
           <button type="button" className="text-sky-500">
             Unpublish
           </button>
         </div>
       </div>
-      <div className="flex flex-row gap-8 pb-4">
-        <div className="basis-72 shrink-0">
+      <div className="flex flex-row gap-9 pb-4">
+        <div className="basis-[17.75rem] shrink-0">
           <AspectRatio ratio="16/9">
             <figure className="absolute w-full h-full inset-0">
               <img
@@ -72,7 +83,7 @@ function Course() {
                 Icon={IconArrowsExchange}
               />
               <Badge variant="outline" rounded="md">
-                Beginner
+                Pemula
               </Badge>
             </LayoutInfo>
           </div>
