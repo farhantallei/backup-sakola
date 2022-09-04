@@ -1,4 +1,4 @@
-import { TextInput } from '@app/components';
+import { TextInput } from '@app/components/ui';
 import { LoginRequest } from '@app/types/rest';
 import { DevTool } from '@hookform/devtools';
 import classNames from 'classnames';

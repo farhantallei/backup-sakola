@@ -3,8 +3,7 @@ import { IconPlus } from '@tabler/icons';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import TextInput from './TextInput';
-import { ActionIcon, Avatar, Badge, SegmentedControl } from './ui';
+import { ActionIcon, Avatar, Badge, SegmentedControl, TextInput } from './ui';
 
 function Navbar() {
   const [activeMenu, setActiveMenu] = useState(false);
