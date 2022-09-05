@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 interface BadgeProps {
   children?: React.ReactNode;
-  color?: 'amber' | 'yellow' | 'green' | 'sky' | 'purple';
+  color?: 'gray' | 'amber' | 'yellow' | 'green' | 'sky' | 'purple';
   variant?: 'light' | 'filled' | 'outline' | 'dot';
   size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
@@ -18,6 +18,12 @@ function Badge({
   className,
 }: BadgeProps) {
   const styles: Record<typeof color, Record<typeof variant, string>> = {
+    gray: {
+      light: 'bg-gray-100 text-gray-600',
+      filled: 'bg-gray-500',
+      outline: 'border-gray-200 text-gray-400',
+      dot: 'before:bg-gray-500',
+    },
     amber: {
       light: 'bg-amber-100 text-amber-600',
       filled: 'bg-amber-500',

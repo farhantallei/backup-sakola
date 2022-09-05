@@ -6,7 +6,20 @@ export interface RefreshTokenResponse {
   token: string;
 }
 
-export interface CourseResponse {
+interface GetCoursesResponse {
+  count: {
+    total: number;
+    prev: number;
+    next: number;
+  };
+  page: {
+    total: number;
+    prev: number;
+    next: number;
+  };
+}
+
+export interface CourseListResponse {
   id: string;
   title: string;
   thumbnailUrl: string | null;
@@ -18,27 +31,24 @@ export interface CourseResponse {
   publishedAt: string | null;
   subject: {
     name: string;
-    category: string;
+    category: 'islam' | 'dunia';
   } | null;
 }
 
-export interface UnpublishedCourseResponse
-  extends Omit<CourseResponse, 'publishedAt'> {
+export interface UncategorizedCourseListResponse
+  extends Omit<CourseListResponse, 'publishedAt' | 'subject'> {}
+
+export interface GetUncategorizedCoursesResponse extends GetCoursesResponse {
+  courses: UncategorizedCourseListResponse[];
+}
+
+export interface UnpublishedCourseListResponse
+  extends Omit<CourseListResponse, 'publishedAt'> {
   published: false;
 }
 
-export interface GetUnpublishedCoursesResponse {
-  count: {
-    total: number;
-    prev: number;
-    next: number;
-  };
-  page: {
-    total: number;
-    prev: number;
-    next: number;
-  };
-  courses: UnpublishedCourseResponse[];
+export interface GetUnpublishedCoursesResponse extends GetCoursesResponse {
+  courses: UnpublishedCourseListResponse[];
 }
 
 export interface FastifyError {

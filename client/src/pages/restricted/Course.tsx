@@ -1,4 +1,3 @@
-import placeholderImage from '@app/assets/images/placeholder-image.png';
 import { Text, Title } from '@app/components/typography';
 import { ActionIcon, Badge, Divider } from '@app/components/ui';
 import { useDashboardContext } from '@app/context/DashboardContext';
@@ -27,10 +26,10 @@ function Course() {
       <div className="flex items-center justify-between">
         <div className="flex flex-row gap-2">
           <Badge variant="dot" color="green">
-            selesai
+            Selesai
           </Badge>
           <Badge variant="dot" color="amber">
-            published
+            Published
           </Badge>
         </div>
         <div>
@@ -54,7 +53,7 @@ function Course() {
             <figure className="absolute w-full h-full inset-0">
               <img
                 title="Title"
-                src={placeholderImage}
+                src="/assets/images/placeholder-image.png"
                 className="object-cover w-full h-full"
               />
             </figure>

@@ -1,1 +1,2 @@
-export { default as useCourseList } from './useCourseList';
+export { default as useUncategorizedCourseList } from './useUncategorizedCourseList';
+export { default as useUnpublishedCourseList } from './useUnpublishedCourseList';

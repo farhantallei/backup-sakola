@@ -1,6 +1,42 @@
 import { Type } from '@sinclair/typebox';
 import { CourseModel, SubjectModel } from '../../../models';
 
+export const GetUncategorizedCoursesSchema = {
+  querystring: Type.Object({
+    page: Type.Number({ minimum: 1, multipleOf: 1 }),
+    limit: Type.Number({ minimum: 1, multipleOf: 1 }),
+  }),
+  response: {
+    200: Type.Object({
+      count: Type.Object({
+        total: Type.Number(),
+        prev: Type.Number(),
+        next: Type.Number(),
+      }),
+      page: Type.Object({
+        total: Type.Number(),
+        prev: Type.Number(),
+        next: Type.Number(),
+      }),
+      courses: Type.Array(
+        Type.Object({
+          id: CourseModel.response.id,
+          title: CourseModel.response.title,
+          thumbnailUrl: CourseModel.response.thumbnailUrl,
+          level: CourseModel.response.level,
+          published: CourseModel.response.published,
+          status: CourseModel.response.status,
+          createdAt: CourseModel.response.createdAt,
+          updatedAt: CourseModel.response.updatedAt,
+        })
+      ),
+    }),
+  },
+};
+
+export type GetUncategorizedCoursesTSchema =
+  typeof GetUncategorizedCoursesSchema;
+
 export const GetUnpublishedCoursesSchema = {
   querystring: Type.Object({
     page: Type.Number({ minimum: 1, multipleOf: 1 }),

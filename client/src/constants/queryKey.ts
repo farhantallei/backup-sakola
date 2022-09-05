@@ -1,0 +1,3 @@
+export const COURSES = 'COURSES';
+export const UNCATEGORIZED = 'UNCATEGORIZED';
+export const UNPUBLISHED = 'UNPUBLISHED';

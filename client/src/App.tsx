@@ -1,5 +1,5 @@
 import { Login } from '@app/pages/auth';
-import { Course, Dashboard } from '@app/pages/restricted';
+import { Course, Draft, Home } from '@app/pages/restricted';
 import { AuthRoute, RestrictedRoute } from '@app/routes';
 import { addClassName } from '@app/utils';
 import { useEffect } from 'react';
@@ -22,7 +22,8 @@ function App() {
         <Route path="/" element={<Login />} />
       </Route>
       <Route element={<RestrictedRoute />}>
-        <Route path="/beranda" element={<Dashboard />} />
+        <Route path="/beranda" element={<Home />} />
+        <Route path="/draf" element={<Draft />} />
         <Route path="/pelajaran/:courseId" element={<Course />} />
         <Route path="*" element={<h1>Not found</h1>} />
       </Route>

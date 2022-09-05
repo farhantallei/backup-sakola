@@ -1,3 +1,4 @@
+import { useDashboardContext } from '@app/context/DashboardContext';
 import {
   IconArchive,
   IconCheckupList,
@@ -11,6 +12,8 @@ import { Container, Footer } from './layouts';
 
 // TODO: Responsive apple sidebar
 function Sidebar() {
+  const { isSidebarOpen } = useDashboardContext();
+  if (!isSidebarOpen) return null;
   return (
     <Container>
       <Section>

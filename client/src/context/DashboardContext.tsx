@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface DashboardContextValue {
   isSidebarOpen: boolean;
@@ -18,7 +19,21 @@ interface DashboardProviderProps {
 }
 
 function DashboardProvider({ children }: DashboardProviderProps) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (
+      pathname === '/beranda' ||
+      pathname === '/draf' ||
+      pathname === '/arsip' ||
+      pathname === '/to-do' ||
+      pathname === '/berjalan' ||
+      pathname === '/selesai'
+    ) {
+      if (!isSidebarOpen) openSidebar();
+    }
+  }, [pathname]);
 
   function openSidebar() {
     setIsSidebarOpen(true);
