@@ -11,7 +11,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@tabler/icons": "^1.92.0",
+    "@tabler/icons": "^1.93.0",
     "@tanstack/react-query": "^4.2.3",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
@@ -23,21 +23,21 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^4.2.2",
-    "@tailwindcss/forms": "^0.5.2",
-    "@tailwindcss/typography": "^0.5.4",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.7",
     "@tanstack/react-query-devtools": "^4.2.3",
     "@testing-library/jest-dom": "^5.16.5",
-    "@types/node": "^18.7.13",
-    "@types/react": "^18.0.15",
+    "@types/node": "^18.7.15",
+    "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^2.0.0",
-    "@vitest/coverage-c8": "^0.22.1",
+    "@vitejs/plugin-react": "^2.1.0",
+    "@vitest/coverage-c8": "^0.23.1",
     "autoprefixer": "^10.4.8",
     "jsdom": "^20.0.0",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.1.8",
-    "typescript": "^4.6.4",
-    "vite": "^3.0.0",
-    "vitest": "^0.22.1"
+    "typescript": "^4.8.2",
+    "vite": "^3.1.0",
+    "vitest": "^0.23.1"
   }
 }
