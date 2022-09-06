@@ -7,3 +7,7 @@ export interface GetCoursesRequest {
   page: number;
   limit: number;
 }
+
+export interface GetCourseRequest {
+  id: string;
+}

@@ -19,9 +19,10 @@ interface GetCoursesResponse {
   };
 }
 
-export interface CourseListResponse {
+export interface CourseResponse {
   id: string;
   title: string;
+  description: string | null;
   thumbnailUrl: string | null;
   level: 'pemula' | 'menengah' | 'lanjutan' | null;
   published: boolean;
@@ -34,6 +35,9 @@ export interface CourseListResponse {
     category: 'islam' | 'dunia';
   } | null;
 }
+
+export interface CourseListResponse
+  extends Omit<CourseResponse, 'description'> {}
 
 export interface UncategorizedCourseListResponse
   extends Omit<CourseListResponse, 'publishedAt' | 'subject'> {}
@@ -50,6 +54,8 @@ export interface UnpublishedCourseListResponse
 export interface GetUnpublishedCoursesResponse extends GetCoursesResponse {
   courses: UnpublishedCourseListResponse[];
 }
+
+export interface GetCourseResponse extends Omit<CourseResponse, 'id'> {}
 
 export interface FastifyError {
   statusCode: number;

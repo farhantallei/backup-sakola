@@ -1,11 +1,13 @@
 import { RouteHandlerTypebox } from '../../../types';
 import {
+  GetCourseTSchema,
   GetUncategorizedCoursesTSchema,
   GetUnpublishedCoursesTSchema,
 } from './course.schemas';
 import {
   countUncategorizedCourses,
   countUnpublishedCourses,
+  getCourse,
   getUncategorizedCourses,
   getUnpublishedCourses,
 } from './course.services';
@@ -137,5 +139,25 @@ export const GetUnpublishedCoursesHandler: RouteHandlerTypebox<
         ...unpublishedCourse,
       })
     ),
+  };
+};
+
+export const GetCourseHandler: RouteHandlerTypebox<GetCourseTSchema> = async (
+  request,
+  reply
+) => {
+  const { courseId } = request.params;
+  const authorId = request.author.id;
+
+  const courseQuery = await getCourse(reply, { courseId, authorId });
+  if (courseQuery == null) return reply.notFound('Course is not found');
+
+  const { createdAt, updatedAt, publishedAt, ...course } = courseQuery;
+
+  return {
+    createdAt: createdAt.toISOString(),
+    updatedAt: updatedAt.toISOString(),
+    publishedAt: publishedAt?.toISOString() || null,
+    ...course,
   };
 };

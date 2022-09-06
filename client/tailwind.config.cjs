@@ -26,7 +26,27 @@ module.exports = {
         'Segoe UI Emoji',
       ],
     },
-    extend: {},
+    extend: {
+      animation: {
+        'navigation-progress-finish': 'np-opacity 1s 150ms forwards',
+        'navigation-progress-after':
+          'np-after-opacity 200ms forwards, np-after-shadow 2s 4s forwards',
+      },
+      keyframes: {
+        'np-opacity': {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        'np-after-opacity': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        'np-after-shadow': {
+          '0%': { 'box-shadow': '0 0 15px, 0 0 5px' },
+          '100%': { 'box-shadow': '0 0 3px, 0 0 1px' },
+        },
+      },
+    },
   },
   plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };

@@ -22,6 +22,7 @@
       "@auth/*": ["./features/auth/*"],
       "@course/*": ["./features/course/*"],
       "@pagination/*": ["./features/pagination/*"],
+      "@progress": ["./features/progress/index.ts"],
       "@sidebar": ["./features/sidebar/index.ts"]
     }
   },

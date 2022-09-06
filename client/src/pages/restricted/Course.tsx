@@ -2,6 +2,14 @@ import { Text, Title } from '@app/components/typography';
 import { ActionIcon, Badge, Divider } from '@app/components/ui';
 import { useDashboardContext } from '@app/context/DashboardContext';
 import { AspectRatio } from '@app/layouts';
+import { formatDate } from '@app/utils';
+import {
+  CategoryBadge,
+  HighlightBadge,
+  LevelBadge,
+  StatusBadge,
+} from '@course/components/badges';
+import useCourse from '@course/hooks/useCourse';
 import {
   IconArrowsExchange,
   IconLayoutSidebar,
@@ -16,28 +24,49 @@ function Course() {
   const { toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };
 
+  const { data, isLoading, isError, error } = useCourse(courseId);
+
+  if (isLoading) return null;
+  if (isError) {
+    if (error instanceof Error)
+      return <Text className="text-red-500">{error.message}</Text>;
+    return (
+      <Text className="text-red-500">
+        Something goes wrong. Please refresh your page.
+      </Text>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      <ActionIcon
-        Icon={IconLayoutSidebar}
-        title="Toggle sidebar"
-        onClick={toggleSidebar}
-      />
+      <div className="flex flex-row justify-between">
+        <ActionIcon
+          Icon={IconLayoutSidebar}
+          title="Toggle sidebar"
+          onClick={toggleSidebar}
+        />
+        {/* TODO: move this button to bottom. */}
+        <ActionIcon Icon={IconPlus} title="Add a new class" color="gray" />
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex flex-row gap-2">
-          <Badge variant="dot" color="green">
-            Selesai
-          </Badge>
-          <Badge variant="dot" color="amber">
-            Published
-          </Badge>
+          <StatusBadge status={data.status} />
+          {data.published ? (
+            <Badge variant="dot" color="amber">
+              Published
+            </Badge>
+          ) : null}
         </div>
-        <div>
-          <Badge color="purple">Dunia</Badge>
+        <div className="flex flex-row gap-2">
+          <CategoryBadge category={data.subject?.category} />
+          <HighlightBadge
+            createdAt={data.createdAt}
+            updatedAt={data.updatedAt}
+          />
         </div>
       </div>
       <div className="flex flex-row justify-between">
-        <div className="flex items-center">Matematika Dasar</div>
+        <div className="flex items-center">[breadcrumbs]</div>
         <div className="flex items-center gap-2">
           <button type="button" className="text-sky-500">
             Done
@@ -53,7 +82,9 @@ function Course() {
             <figure className="absolute w-full h-full inset-0">
               <img
                 title="Title"
-                src="/assets/images/placeholder-image.png"
+                src={
+                  data.thumbnailUrl || '/assets/images/placeholder-image.png'
+                }
                 className="object-cover w-full h-full"
               />
             </figure>
@@ -63,7 +94,7 @@ function Course() {
           <LayoutInfo>
             <TitleInfo title="Title" label="Edit" Icon={IconPencil} />
             <Title order={2} className="text-2xl">
-              Matematika Dasar
+              {data.title}
             </Title>
           </LayoutInfo>
           <div className="flex flex-row gap-12">
@@ -73,7 +104,13 @@ function Course() {
                 label="Change"
                 Icon={IconArrowsExchange}
               />
-              <Text weight={600}>Matematika</Text>
+              {data.subject ? (
+                <Text weight={600}>{data.subject.name}</Text>
+              ) : (
+                <Text size="sm" weight={500} className="text-gray-400 truncate">
+                  uncategorized
+                </Text>
+              )}
             </LayoutInfo>
             <LayoutInfo>
               <TitleInfo
@@ -81,17 +118,16 @@ function Course() {
                 label="Change"
                 Icon={IconArrowsExchange}
               />
-              <Badge variant="outline" rounded="md">
-                Pemula
-              </Badge>
+              <LevelBadge level={data.level} />
             </LayoutInfo>
           </div>
           <LayoutInfo>
             <TitleInfo title="Description" label="Edit" Icon={IconPencil} />
-            <Text className="text-gray-500">
-              In sit vulputate lorem vel aliquet vitae adipiscing. Amet neque
-              massa vitae semper quis id sit.
-            </Text>
+            {data.description ? (
+              <Text className="text-gray-500">{data.description}</Text>
+            ) : (
+              <Text className="text-gray-300">Tidak ada deskripsi.</Text>
+            )}
           </LayoutInfo>
         </div>
       </div>
@@ -101,22 +137,30 @@ function Course() {
           <Text className="text-gray-400" size="sm">
             Created at:
           </Text>
-          <Divider className="self-stretch">9 June 2022</Divider>
+          <Divider className="self-stretch">
+            {formatDate(new Date(data.createdAt))}
+          </Divider>
         </div>
         <div className="flex flex-col w-full items-center gap-1">
           <IconPencil size={24} className="text-gray-300" />
           <Text className="text-gray-400" size="sm">
             Updated at:
           </Text>
-          <Divider className="self-stretch">3 jam yang lalu</Divider>
+          <Divider className="self-stretch">
+            {formatDate(new Date(data.updatedAt))}
+          </Divider>
         </div>
-        <div className="flex flex-col w-full items-center gap-1">
-          <IconRocket size={24} className="text-gray-300" />
-          <Text className="text-gray-400" size="sm">
-            Published at:
-          </Text>
-          <Divider className="self-stretch">1 menit yang lalu</Divider>
-        </div>
+        {data.publishedAt ? (
+          <div className="flex flex-col w-full items-center gap-1">
+            <IconRocket size={24} className="text-gray-300" />
+            <Text className="text-gray-400" size="sm">
+              Published at:
+            </Text>
+            <Divider className="self-stretch">
+              {formatDate(new Date(data.publishedAt))}
+            </Divider>
+          </div>
+        ) : null}
       </div>
     </div>
   );

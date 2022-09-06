@@ -1,4 +1,6 @@
 import {
+  GetCourseRequest,
+  GetCourseResponse,
   GetCoursesRequest,
   GetUncategorizedCoursesResponse,
   GetUnpublishedCoursesResponse,
@@ -17,4 +19,8 @@ export function getUnpublishedCourses({ page, limit }: GetCoursesRequest) {
   return makeRequest<GetUnpublishedCoursesResponse, GetCoursesRequest>(
     `${prefix}/unpublished?page=${page}&limit=${limit}`
   );
+}
+
+export function getCourse({ id }: GetCourseRequest) {
+  return makeRequest<GetCourseResponse>(`${prefix}/${id}`);
 }

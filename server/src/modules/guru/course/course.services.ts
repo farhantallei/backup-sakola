@@ -81,3 +81,32 @@ export async function getUnpublishedCourses(
     reply
   );
 }
+
+export async function getCourse(
+  reply: FastifyReply,
+  { courseId, authorId }: { courseId: string; authorId: string }
+) {
+  return await commitToDB(
+    prisma.course.findUnique({
+      where: { id_authorId: { id: courseId, authorId } },
+      select: {
+        title: true,
+        description: true,
+        thumbnailUrl: true,
+        level: true,
+        published: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        publishedAt: true,
+        subject: {
+          select: {
+            name: true,
+            category: true,
+          },
+        },
+      },
+    }),
+    reply
+  );
+}

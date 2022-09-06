@@ -78,3 +78,31 @@ export const GetUnpublishedCoursesSchema = {
 };
 
 export type GetUnpublishedCoursesTSchema = typeof GetUnpublishedCoursesSchema;
+
+export const GetCourseSchema = {
+  params: Type.Object({
+    courseId: CourseModel.validation.id,
+  }),
+  response: {
+    200: Type.Object({
+      title: CourseModel.response.title,
+      description: CourseModel.response.description,
+      thumbnailUrl: CourseModel.response.thumbnailUrl,
+      level: CourseModel.response.level,
+      published: CourseModel.response.published,
+      status: CourseModel.response.status,
+      createdAt: CourseModel.response.createdAt,
+      updatedAt: CourseModel.response.updatedAt,
+      publishedAt: CourseModel.response.publishedAt,
+      subject: Type.Union([
+        Type.Object({
+          name: SubjectModel.response.name,
+          category: SubjectModel.response.category,
+        }),
+        Type.Null(),
+      ]),
+    }),
+  },
+};
+
+export type GetCourseTSchema = typeof GetCourseSchema;

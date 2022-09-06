@@ -1,16 +1,15 @@
 import { Text } from '@app/components/typography';
 import { Badge } from '@app/components/ui';
-import { useDashboardContext } from '@app/context/DashboardContext';
+import usePrefetchCourse from '@app/features/course/hooks/usePrefetchCourse';
 import { AspectRatio } from '@app/layouts';
 import { formatDate } from '@app/utils';
-import { IconCirclePlus, IconPencil, IconRocket } from '@tabler/icons';
-import { Link } from 'react-router-dom';
 import {
   CategoryBadge,
   HighlightBadge,
   LevelBadge,
   StatusBadge,
-} from './components';
+} from '@course/components/badges';
+import { IconCirclePlus, IconPencil, IconRocket } from '@tabler/icons';
 
 interface CourseListItemProps {
   id: string;
@@ -39,14 +38,13 @@ function CourseListItem({
   updatedAt,
   publishedAt,
 }: CourseListItemProps) {
-  const { closeSidebar } = useDashboardContext();
+  const prefetchCourse = usePrefetchCourse(id);
 
   return (
     <li>
-      <Link
-        to={`/pelajaran/${id}`}
-        onClick={closeSidebar}
-        className="block hover:bg-gray-50">
+      <div
+        onClick={prefetchCourse}
+        className="block hover:bg-gray-50 cursor-pointer">
         <div className="flex flex-row gap-4 p-4">
           <div className="basis-40">
             <AspectRatio ratio="16/9">
@@ -107,7 +105,7 @@ function CourseListItem({
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </li>
   );
 }

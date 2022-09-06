@@ -62,14 +62,14 @@ function CourseList({
             </ul>
             <CourseListController
               pageCount={{
-                total: pageCount.total as number,
-                prev: pageCount.prev as number,
-                next: pageCount.next as number,
+                total: pageCount.total!,
+                prev: pageCount.prev!,
+                next: pageCount.next!,
               }}
               itemCount={{
-                total: itemCount.total as number,
-                prev: itemCount.prev as number,
-                next: itemCount.next as number,
+                total: itemCount.total!,
+                prev: itemCount.prev!,
+                next: itemCount.next!,
               }}
             />
           </>

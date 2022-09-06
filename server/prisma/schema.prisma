@@ -53,7 +53,7 @@ enum CourseStatus {
 }
 
 model Course {
-  id           String       @id @default(cuid())
+  id           String       @unique @default(cuid())
   author       Author       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   subject      Subject?     @relation(fields: [subjectId], references: [id])
   authorId     String
@@ -71,6 +71,8 @@ model Course {
   // courseObjectives    CourseObjective[]
   // coursePrerequisites CoursePrerequisite[]
 
+  @@id([id, authorId])
+  @@index([id])
   @@index([authorId])
 }
 
