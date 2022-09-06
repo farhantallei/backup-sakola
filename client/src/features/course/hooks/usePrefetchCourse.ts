@@ -1,7 +1,7 @@
 import { COURSE } from '@app/constants/queryKey';
 import { useDashboardContext } from '@app/context/DashboardContext';
-import { useNavigationProgressContext } from '@app/features/progress';
 import { getCourse } from '@app/services/course';
+import { useNavigationProgressContext } from '@progress';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 

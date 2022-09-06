@@ -1,5 +1,5 @@
-import { useUnpublishedCourseList } from '@app/features/course/hooks';
 import { CourseList } from '@course/components';
+import { useUnpublishedCourseList } from '@course/hooks';
 import { useState } from 'react';
 
 function Home() {

@@ -1,4 +1,5 @@
 import { useTimeout } from '@app/hooks';
+import { getRandomInt } from '@app/utils';
 import { createContext, useContext, useState } from 'react';
 import { NavigationProgress } from '../components';
 
@@ -31,12 +32,6 @@ function NavigationProgressProvider({
     setEnd(false);
     setProgress(0);
   }, 1000);
-
-  function getRandomInt(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
 
   function startNavigationProgress() {
     setRunning(true);

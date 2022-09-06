@@ -1,6 +1,5 @@
 import { Text } from '@app/components/typography';
 import { Badge } from '@app/components/ui';
-import usePrefetchCourse from '@app/features/course/hooks/usePrefetchCourse';
 import { AspectRatio } from '@app/layouts';
 import { formatDate } from '@app/utils';
 import {
@@ -9,6 +8,7 @@ import {
   LevelBadge,
   StatusBadge,
 } from '@course/components/badges';
+import { usePrefetchCourse } from '@course/hooks';
 import { IconCirclePlus, IconPencil, IconRocket } from '@tabler/icons';
 
 interface CourseListItemProps {

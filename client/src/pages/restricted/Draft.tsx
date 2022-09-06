@@ -1,5 +1,5 @@
-import { CourseList } from '@app/features/course/components';
-import { useUncategorizedCourseList } from '@app/features/course/hooks';
+import { CourseList } from '@course/components';
+import { useUncategorizedCourseList } from '@course/hooks';
 import { useState } from 'react';
 
 function Draft() {

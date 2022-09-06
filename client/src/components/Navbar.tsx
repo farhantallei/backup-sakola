@@ -1,5 +1,5 @@
 import { useDashboardContext } from '@app/context/DashboardContext';
-import { useLogout } from '@app/features/auth/hooks';
+import { useLogout } from '@auth/hooks';
 import { IconPlus } from '@tabler/icons';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';

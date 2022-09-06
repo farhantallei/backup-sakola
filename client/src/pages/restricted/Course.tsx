@@ -9,7 +9,7 @@ import {
   LevelBadge,
   StatusBadge,
 } from '@course/components/badges';
-import useCourse from '@course/hooks/useCourse';
+import { useCourse } from '@course/hooks';
 import {
   IconArrowsExchange,
   IconLayoutSidebar,
