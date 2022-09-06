@@ -3,16 +3,17 @@ import { useDashboardContext } from '@app/context/DashboardContext';
 import { getCourse } from '@app/services/course';
 import { useNavigationProgressContext } from '@progress';
 import { useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-function usePrefetchCourse(id: string) {
+function usePrefetchCourse() {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const { closeSidebar } = useDashboardContext();
   const { startNavigationProgress, finishNavigationProgress } =
     useNavigationProgressContext();
 
-  return async function prefetchCourse() {
+  return async function prefetchCourse(id: string) {
     startNavigationProgress();
     await queryClient.prefetchQuery({
       queryKey: [COURSE, id],
@@ -20,7 +21,7 @@ function usePrefetchCourse(id: string) {
     });
     finishNavigationProgress();
     closeSidebar();
-    navigate(`/pelajaran/${id}`);
+    navigate(`/pelajaran/${id}`, { state: location });
   };
 }
 

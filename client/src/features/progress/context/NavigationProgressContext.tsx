@@ -7,6 +7,8 @@ interface NavigationProgressContextValue {
   startNavigationProgress: () => void;
   finishNavigationProgress: () => void;
   resetNavigationProgress: () => void;
+  running: boolean;
+  end: boolean;
 }
 
 const NavigationProgressContext = createContext<NavigationProgressContextValue>(
@@ -28,7 +30,7 @@ function NavigationProgressProvider({
   const [running, setRunning] = useState(false);
   const [end, setEnd] = useState(false);
 
-  const [isEndTimeoutReady, clearEndTimeout, setEndTimeout] = useTimeout(() => {
+  const [clearEndTimeout, setEndTimeout] = useTimeout(() => {
     setEnd(false);
     setProgress(0);
   }, 1000);
@@ -56,6 +58,8 @@ function NavigationProgressProvider({
     startNavigationProgress,
     finishNavigationProgress,
     resetNavigationProgress,
+    running,
+    end,
   };
 
   return (

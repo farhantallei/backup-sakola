@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-type TimeoutReturn = [() => boolean | null, () => void, () => void];
+type TimeoutReturn = [() => void, () => void, () => boolean | null];
 
 function useTimeout(fn: Function, ms: number = 0): TimeoutReturn {
   const ready = useRef<boolean | null>(false);
@@ -33,7 +33,7 @@ function useTimeout(fn: Function, ms: number = 0): TimeoutReturn {
     return clear;
   }, [ms]);
 
-  return [isReady, clear, set];
+  return [clear, set, isReady];
 }
 
 export default useTimeout;

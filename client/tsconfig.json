@@ -23,6 +23,7 @@
       "@course/*": ["./features/course/*"],
       "@pagination/*": ["./features/pagination/*"],
       "@progress": ["./features/progress/index.ts"],
+      "@progress/*": ["./features/progress/*"],
       "@sidebar": ["./features/sidebar/index.ts"]
     }
   },

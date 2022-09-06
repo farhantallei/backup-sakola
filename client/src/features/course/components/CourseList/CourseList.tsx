@@ -48,7 +48,7 @@ function CourseList({
     <CourseListContext.Provider value={value}>
       <div className="bg-white overflow-hidden shadow rounded-lg">
         {status === 'loading' ? (
-          <Loader dark />
+          <Loader className="fill-sky-500" />
         ) : status === 'error' ? (
           error instanceof Error ? (
             <span>{error.message}</span>

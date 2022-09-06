@@ -1,19 +1,17 @@
 import classNames from 'classnames';
 
 interface LoaderProps {
-  dark?: boolean;
+  className?: string;
 }
 
-function Loader({ dark = false }: LoaderProps) {
+function Loader({ className }: LoaderProps) {
   return (
     <svg
       width="36px"
       height="9px"
       viewBox="0 0 120 30"
       xmlns="http://www.w3.org/2000/svg"
-      className={classNames('h-5', 'fill-white', {
-        ['fill-black']: dark,
-      })}
+      className={classNames('h-5', 'fill-black dark:fill-white', className)}
       role="presentation">
       <circle cx="15" cy="15" r="15">
         <animate

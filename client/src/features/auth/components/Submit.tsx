@@ -34,7 +34,7 @@ function Submit({ isLoading }: SubmitProps) {
           'mt-4 md:mt-0',
           'disabled:bg-blue-400'
         )}>
-        {isLoading ? <Loader /> : 'Masuk'}
+        {isLoading ? <Loader className="fill-white" /> : 'Masuk'}
       </button>
     </div>
   );

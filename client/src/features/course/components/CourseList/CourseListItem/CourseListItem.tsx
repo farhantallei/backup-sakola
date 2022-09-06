@@ -8,11 +8,9 @@ import {
   LevelBadge,
   StatusBadge,
 } from '@course/components/badges';
-import { usePrefetchCourse } from '@course/hooks';
 import { IconCirclePlus, IconPencil, IconRocket } from '@tabler/icons';
 
 interface CourseListItemProps {
-  id: string;
   title: string;
   thumbnailUrl: string | null;
   subject?: string;
@@ -23,10 +21,10 @@ interface CourseListItemProps {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 function CourseListItem({
-  id,
   title,
   thumbnailUrl,
   subject,
@@ -37,14 +35,11 @@ function CourseListItem({
   createdAt,
   updatedAt,
   publishedAt,
+  onClick,
 }: CourseListItemProps) {
-  const prefetchCourse = usePrefetchCourse(id);
-
   return (
     <li>
-      <div
-        onClick={prefetchCourse}
-        className="block hover:bg-gray-50 cursor-pointer">
+      <div onClick={onClick} className="block hover:bg-gray-50 cursor-pointer">
         <div className="flex flex-row gap-4 p-4">
           <div className="basis-40">
             <AspectRatio ratio="16/9">
