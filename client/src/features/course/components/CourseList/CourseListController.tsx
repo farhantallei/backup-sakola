@@ -1,5 +1,5 @@
+import { useCourseListContext } from '@course/context/CourseListContext';
 import { Pagination } from '@pagination/components';
-import { useCourseListContext } from './CourseList.context';
 
 function CourseListController({
   pageCount,
@@ -10,11 +10,7 @@ function CourseListController({
     prev: number;
     next: number;
   };
-  itemCount: {
-    total: number;
-    prev: number;
-    next: number;
-  };
+  itemCount: number;
 }) {
   const { currentPage, setCurrentPage, limit } = useCourseListContext();
 
@@ -58,15 +54,15 @@ function CourseListController({
           <p className="text-sm text-gray-700">
             Showing
             <span className="font-medium">{` ${
-              itemCount.total > 0 ? limit * (currentPage - 1) + 1 : 0
+              itemCount > 0 ? limit * (currentPage - 1) + 1 : 0
             } `}</span>
             to
             <span className="font-medium">{` ${Math.min(
-              itemCount.total,
+              itemCount,
               limit * currentPage
             )} `}</span>
             of
-            <span className="font-medium">{` ${itemCount.total} `}</span>
+            <span className="font-medium">{` ${itemCount} `}</span>
             results
           </p>
         </div>

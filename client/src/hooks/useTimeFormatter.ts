@@ -1,9 +1,8 @@
 import { formatDate, formatTimeAgo } from '@app/utils/dateTimeFormatter';
+import { isMoreThan3Days, isMoreThanAYear } from '@app/utils/isGreaterThan';
 import { useMemo } from 'react';
-import useTimeGreaterThan from './useTimeGreaterThan';
 
 function useTimeFormatter(time: string) {
-  const { isMoreThan3Days, isMoreThanAYear } = useTimeGreaterThan();
   return useMemo(() => {
     if (isMoreThanAYear(time))
       return formatDate(new Date(time), { year: true });

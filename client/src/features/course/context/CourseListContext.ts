@@ -7,8 +7,10 @@ export interface CourseListContextValue {
   setLimit: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const CourseListContext = createContext<CourseListContextValue>(null!);
+const CourseListContext = createContext<CourseListContextValue>(null!);
 
 export function useCourseListContext(): CourseListContextValue {
   return useContext(CourseListContext) || {};
 }
+
+export default CourseListContext;

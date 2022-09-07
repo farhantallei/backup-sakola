@@ -20,7 +20,6 @@ import {
 } from '@tabler/icons';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-// TODO: Use query link on pagination
 function Course() {
   const { openSidebar, toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };

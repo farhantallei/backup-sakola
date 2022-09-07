@@ -15,9 +15,11 @@ export const GetUncategorizedCoursesSchema = {
       }),
       page: Type.Object({
         total: Type.Number(),
+        current: Type.Number(),
         prev: Type.Number(),
         next: Type.Number(),
       }),
+      limit: Type.Number(),
       courses: Type.Array(
         Type.Object({
           id: CourseModel.response.id,
@@ -51,9 +53,11 @@ export const GetUnpublishedCoursesSchema = {
       }),
       page: Type.Object({
         total: Type.Number(),
+        current: Type.Number(),
         prev: Type.Number(),
         next: Type.Number(),
       }),
+      limit: Type.Number(),
       courses: Type.Array(
         Type.Object({
           id: CourseModel.response.id,

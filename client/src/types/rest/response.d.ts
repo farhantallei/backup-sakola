@@ -6,7 +6,7 @@ export interface RefreshTokenResponse {
   token: string;
 }
 
-interface GetCoursesResponse {
+interface GetCourseCountResponse {
   count: {
     total: number;
     prev: number;
@@ -14,9 +14,11 @@ interface GetCoursesResponse {
   };
   page: {
     total: number;
+    current: number;
     prev: number;
     next: number;
   };
+  limit: number;
 }
 
 export interface CourseResponse {
@@ -42,7 +44,8 @@ export interface CourseListResponse
 export interface UncategorizedCourseListResponse
   extends Omit<CourseListResponse, 'publishedAt' | 'subject'> {}
 
-export interface GetUncategorizedCoursesResponse extends GetCoursesResponse {
+export interface GetUncategorizedCoursesResponse
+  extends GetCourseCountResponse {
   courses: UncategorizedCourseListResponse[];
 }
 
@@ -51,7 +54,7 @@ export interface UnpublishedCourseListResponse
   published: false;
 }
 
-export interface GetUnpublishedCoursesResponse extends GetCoursesResponse {
+export interface GetUnpublishedCoursesResponse extends GetCourseCountResponse {
   courses: UnpublishedCourseListResponse[];
 }
 

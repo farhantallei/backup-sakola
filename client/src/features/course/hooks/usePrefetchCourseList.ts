@@ -1,4 +1,4 @@
-import { GetCoursesResponse } from '@app/types/rest';
+import { GetCourseCountResponse } from '@app/types/rest';
 import { UseQueryResult, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
@@ -11,7 +11,7 @@ interface PrefetchCourseListParams<T> {
   getCourses: (data: { page: number; limit: number }) => Promise<T>;
 }
 
-function usePrefetchCourseList<T extends GetCoursesResponse>({
+function usePrefetchCourseList<T extends GetCourseCountResponse>({
   key,
   filter,
   page,
@@ -34,7 +34,7 @@ function usePrefetchCourseList<T extends GetCoursesResponse>({
 
     if (currentPage[whichPage]) return;
 
-    const siblingPageKey = [key, siblingPage[whichPage], { filter }];
+    const siblingPageKey = [key, { filter }, siblingPage[whichPage]];
     const siblingPageCache = queryClient.getQueryCache().find(siblingPageKey);
 
     if (siblingPageCache) return;
@@ -59,7 +59,7 @@ function usePrefetchCourseList<T extends GetCoursesResponse>({
         next: page + 1,
       };
 
-      const siblingPageKey = [key, siblingPage[whichPage], { filter }];
+      const siblingPageKey = [key, { filter }, siblingPage[whichPage]];
       const siblingPageCache = queryClient.getQueryCache().find(siblingPageKey);
 
       if (siblingPageCache) return;
