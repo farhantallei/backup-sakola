@@ -1,8 +1,8 @@
 import { Text, Title } from '@app/components/typography';
 import { ActionIcon, Badge, Divider, Loader } from '@app/components/ui';
 import { useDashboardContext } from '@app/context/DashboardContext';
+import { useTimeFormatter } from '@app/hooks';
 import { AspectRatio } from '@app/layouts';
-import { formatDate } from '@app/utils';
 import {
   CategoryBadge,
   HighlightBadge,
@@ -20,6 +20,7 @@ import {
 } from '@tabler/icons';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
+// TODO: Use query link on pagination
 function Course() {
   const { openSidebar, toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };
@@ -27,6 +28,10 @@ function Course() {
   const from =
     location.state instanceof Object ? (location.state as Location) : null;
   const { data, isLoading, isFetching, isError, error } = useCourse(courseId);
+  const createdDate = data && useTimeFormatter(data.createdAt);
+  const updatedDate = data && useTimeFormatter(data.updatedAt);
+  const publishedDate =
+    data && data.publishedAt && useTimeFormatter(data.publishedAt);
 
   return (
     <div className="flex flex-col gap-4 min-h-full">
@@ -165,18 +170,14 @@ function Course() {
               <Text className="text-gray-400" size="sm">
                 Created at:
               </Text>
-              <Divider className="self-stretch">
-                {formatDate(new Date(data.createdAt))}
-              </Divider>
+              <Divider className="self-stretch">{createdDate}</Divider>
             </div>
             <div className="flex flex-col w-full items-center gap-1">
               <IconPencil size={24} className="text-gray-300" />
               <Text className="text-gray-400" size="sm">
                 Updated at:
               </Text>
-              <Divider className="self-stretch">
-                {formatDate(new Date(data.updatedAt))}
-              </Divider>
+              <Divider className="self-stretch">{updatedDate}</Divider>
             </div>
             {data.publishedAt ? (
               <div className="flex flex-col w-full items-center gap-1">
@@ -184,9 +185,7 @@ function Course() {
                 <Text className="text-gray-400" size="sm">
                   Published at:
                 </Text>
-                <Divider className="self-stretch">
-                  {formatDate(new Date(data.publishedAt))}
-                </Divider>
+                <Divider className="self-stretch">{publishedDate}</Divider>
               </div>
             ) : null}
           </div>

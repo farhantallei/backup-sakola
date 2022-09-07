@@ -1,7 +1,7 @@
 import { Text } from '@app/components/typography';
 import { Badge } from '@app/components/ui';
+import { useTimeFormatter } from '@app/hooks';
 import { AspectRatio } from '@app/layouts';
-import { formatDate } from '@app/utils';
 import {
   CategoryBadge,
   HighlightBadge,
@@ -37,6 +37,10 @@ function CourseListItem({
   publishedAt,
   onClick,
 }: CourseListItemProps) {
+  const createdDate = useTimeFormatter(createdAt);
+  const updatedDate = useTimeFormatter(updatedAt);
+  const publishedDate = publishedAt && useTimeFormatter(publishedAt);
+
   return (
     <li>
       <div onClick={onClick} className="block hover:bg-gray-50 cursor-pointer">
@@ -80,20 +84,20 @@ function CourseListItem({
                   <div className="flex flex-row items-center gap-1">
                     <IconRocket size={18} className="text-gray-400" />
                     <Text size="sm" className="text-gray-400">
-                      {formatDate(new Date(publishedAt))}
+                      {publishedDate}
                     </Text>
                   </div>
                 ) : null}
                 <div className="flex flex-row items-center gap-1">
                   <IconPencil size={18} className="text-gray-400" />
                   <Text size="sm" className="text-gray-400">
-                    {formatDate(new Date(updatedAt))}
+                    {updatedDate}
                   </Text>
                 </div>
                 <div className="flex flex-row items-center gap-1">
                   <IconCirclePlus size={18} className="text-gray-400" />
                   <Text size="sm" className="text-gray-400">
-                    {formatDate(new Date(createdAt))}
+                    {createdDate}
                   </Text>
                 </div>
               </div>
