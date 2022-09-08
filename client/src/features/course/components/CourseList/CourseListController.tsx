@@ -3,14 +3,10 @@ import { Pagination } from '@pagination/components';
 
 function CourseListController({
   countTotal,
-  page,
+  pageTotal,
 }: {
   countTotal: number;
-  page: {
-    total: number;
-    prev: number;
-    next: number;
-  };
+  pageTotal: number;
 }) {
   const { currentPage, setCurrentPage, limit } = useCourseListContext();
 
@@ -31,7 +27,7 @@ function CourseListController({
       <div className="flex-1 flex justify-between ss:hidden">
         <button
           type="button"
-          disabled={page.prev <= 0}
+          disabled={currentPage <= 1}
           onClick={prevHandle}
           className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-300">
           Previous
@@ -39,11 +35,11 @@ function CourseListController({
         <div className="self-center text-sm text-gray-700 ">
           <span className="font-semibold">{currentPage}</span>
           {' / '}
-          <span className="font-semibold">{page.total}</span>
+          <span className="font-semibold">{pageTotal}</span>
         </div>
         <button
           type="button"
-          disabled={page.next <= 0}
+          disabled={currentPage >= pageTotal}
           onClick={nextHandle}
           className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-300">
           Next
@@ -69,11 +65,8 @@ function CourseListController({
         <div>
           <Pagination
             onPageChange={pageHandle}
-            countTotal={countTotal}
-            limit={limit}
+            pageTotal={pageTotal}
             currentPage={currentPage}
-            prevPageCount={page.prev}
-            nextPageCount={page.next}
           />
         </div>
       </div>

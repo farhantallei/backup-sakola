@@ -37,7 +37,7 @@ function useCourseList<T extends GetCourseCountResponse>({
     filter,
     currentPage,
     limit,
-    courseList,
+    data: courseList.data,
     getCourses,
   });
 

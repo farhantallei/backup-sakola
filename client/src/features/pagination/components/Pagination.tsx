@@ -4,28 +4,21 @@ import PageControl from './PageControl';
 
 interface PaginationProps {
   onPageChange: (page: number) => void;
-  countTotal: number;
-  limit: number;
+  pageTotal: number;
   boundaryCount?: number;
   siblingCount?: number;
   currentPage: number;
-  prevPageCount: number;
-  nextPageCount: number;
 }
 
 function Pagination({
   onPageChange,
-  countTotal,
-  limit,
+  pageTotal,
   boundaryCount = 1,
   siblingCount = 1,
   currentPage,
-  prevPageCount,
-  nextPageCount,
 }: PaginationProps) {
   const paginationRange = usePagination({
-    countTotal,
-    limit,
+    pageTotal,
     boundaryCount,
     siblingCount,
     currentPage,
@@ -45,11 +38,7 @@ function Pagination({
 
   return (
     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-      <NavControl
-        nav="prev"
-        disabled={prevPageCount <= 0}
-        onClick={prevHandle}
-      />
+      <NavControl nav="prev" disabled={currentPage <= 1} onClick={prevHandle} />
       {paginationRange.map((page, index) => {
         if (page.type === 'dots') {
           return <PageControl key={index} type="dots" />;
@@ -91,7 +80,7 @@ function Pagination({
       })}
       <NavControl
         nav="next"
-        disabled={nextPageCount <= 0}
+        disabled={currentPage >= pageTotal}
         onClick={nextHandle}
       />
     </nav>

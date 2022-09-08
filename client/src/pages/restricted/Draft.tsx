@@ -57,13 +57,7 @@ function Draft() {
   return (
     <div className="flex flex-col justify-center h-full space-y-8">
       <CourseListContext.Provider value={value}>
-        <CourseList
-          countTotal={data.count.total}
-          page={{
-            total: data.page.total,
-            prev: data.page.prev,
-            next: data.page.next,
-          }}>
+        <CourseList countTotal={data.count.total} pageTotal={data.page.total}>
           {data.courses.map(({ id, ...course }) => (
             <CourseList.Item
               key={id}

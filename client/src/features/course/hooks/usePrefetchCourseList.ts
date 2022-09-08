@@ -1,7 +1,7 @@
 import { COURSES, Filter } from '@app/constants/queryKey';
-import { useUpdateEffect } from '@app/hooks';
+import { useMountedDataEffect, useUpdateEffect } from '@app/hooks';
 import { GetCourseCountResponse } from '@app/types/rest';
-import { UseQueryResult, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
 interface PrefetchCourseListParams<T> {
@@ -9,7 +9,7 @@ interface PrefetchCourseListParams<T> {
   filter: Filter;
   currentPage: number;
   limit: number;
-  courseList: UseQueryResult<T>;
+  data?: T;
   getCourses: (data: { page: number; limit: number }) => Promise<T>;
 }
 
@@ -18,7 +18,7 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
   filter,
   currentPage: page,
   limit,
-  courseList,
+  data,
   getCourses,
 }: PrefetchCourseListParams<T>) {
   const queryClient = useQueryClient();
@@ -31,9 +31,11 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
 
   const prefetchOnMount = useCallback(
     (whichPage: 'prev' | 'next') => {
+      if (!data) return;
+
       const currentPage: Record<typeof whichPage, boolean> = {
         prev: page <= 1,
-        next: page >= limit,
+        next: page >= data.page.total,
       };
 
       const siblingPage: Record<typeof whichPage, number> = {
@@ -42,7 +44,6 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
       };
 
       if (currentPage[whichPage]) return;
-      console.log(page, whichPage);
 
       const siblingPageKey = [key, { filter }, siblingPage[whichPage]];
       const siblingPageCache = queryClient.getQueryCache().find(siblingPageKey);
@@ -55,16 +56,16 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
         retry: 3,
       });
     },
-    [limit]
+    [data, limit]
   );
 
   const prefetchOnPage = useCallback(
     (whichPage: 'prev' | 'next') => {
-      if (!courseList.data) return;
+      if (!data) return;
 
       const currentPage: Record<typeof whichPage, boolean> = {
         prev: page > 1,
-        next: page < courseList.data.page.total,
+        next: page < data.page.total,
       };
 
       const siblingPage: Record<typeof whichPage, number> = {
@@ -87,10 +88,14 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
     [page, limit]
   );
 
-  useEffect(() => {
-    prefetchOnMount('prev');
-    prefetchOnMount('next');
-  }, [limit]);
+  useMountedDataEffect(
+    () => {
+      prefetchOnMount('prev');
+      prefetchOnMount('next');
+    },
+    data,
+    [limit]
+  );
 
   useEffect(() => {
     prefetchOnPage('prev');

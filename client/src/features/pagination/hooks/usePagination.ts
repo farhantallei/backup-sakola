@@ -3,8 +3,7 @@ import { Boundary, Dots, Number, Sibling } from '../types';
 import { range } from '../utils';
 
 interface PaginationParams {
-  countTotal: number;
-  limit: number;
+  pageTotal: number;
   boundaryCount: number;
   siblingCount: number;
   currentPage: number;
@@ -18,19 +17,16 @@ type PaginationResult =
   | { type: Dots };
 
 function usePagination({
-  countTotal,
-  limit,
+  pageTotal,
   boundaryCount,
   siblingCount,
   currentPage,
 }: PaginationParams): PaginationResult[] {
   const paginationRange = useMemo((): PaginationResult[] => {
-    const totalPageCount = Math.ceil(countTotal / limit);
-
     const totalPageNumbers = siblingCount * 2 + boundaryCount * 2 + 3;
 
-    if (totalPageNumbers >= totalPageCount)
-      return range(1, totalPageCount).map((number) => ({
+    if (totalPageNumbers >= pageTotal)
+      return range(1, pageTotal).map((number) => ({
         type: 'number',
         number,
       }));
@@ -43,18 +39,17 @@ function usePagination({
     );
     const rightSiblingIndex = Math.min(
       currentPage + siblingCount,
-      totalPageCount - boundaryCount
+      pageTotal - boundaryCount
     );
 
     const showLeftDots = leftSiblingIndex > boundaryCount + 2;
-    const showRightDots =
-      rightSiblingIndex < totalPageCount - (boundaryCount + 1);
+    const showRightDots = rightSiblingIndex < pageTotal - (boundaryCount + 1);
 
     if (!showLeftDots && showRightDots) {
       const leftItemCount = siblingCount * 2 + boundaryCount + 2;
       const rightBoundaryRange: PaginationResult[] = range(
-        totalPageCount - (boundaryCount - 1),
-        totalPageCount
+        pageTotal - (boundaryCount - 1),
+        pageTotal
       ).map((number) => ({ type: 'boundary', number }));
       const leftRange: PaginationResult[] = range(
         boundaryCount + 1,
@@ -83,16 +78,16 @@ function usePagination({
         (number) => ({ type: 'boundary', number })
       );
       const rightRange: PaginationResult[] = range(
-        totalPageCount - rightItemCount + 1 + siblingCount,
-        totalPageCount - boundaryCount
+        pageTotal - rightItemCount + 1 + siblingCount,
+        pageTotal - boundaryCount
       ).map((number) => ({ type: 'number', number }));
       const rightBoundaryRange: PaginationResult[] = range(
-        totalPageCount - boundaryCount + 1,
-        totalPageCount
+        pageTotal - boundaryCount + 1,
+        pageTotal
       ).map((number) => ({ type: 'boundary', number }));
       const rightSiblingRange: PaginationResult[] = range(
-        totalPageCount - rightItemCount + 1,
-        totalPageCount - rightItemCount + siblingCount
+        pageTotal - rightItemCount + 1,
+        pageTotal - rightItemCount + siblingCount
       ).map((number) => ({ type: 'sibling', number }));
 
       return [
@@ -120,8 +115,8 @@ function usePagination({
       rightSiblingIndex
     ).map((number) => ({ type: 'sibling', number }));
     const rightBoundaryRange: PaginationResult[] = range(
-      totalPageCount - boundaryCount + 1,
-      totalPageCount
+      pageTotal - boundaryCount + 1,
+      pageTotal
     ).map((number) => ({ type: 'boundary', number }));
 
     return [
@@ -133,7 +128,7 @@ function usePagination({
       dots,
       ...rightBoundaryRange,
     ];
-  }, [siblingCount, currentPage, limit]);
+  }, [siblingCount, currentPage, pageTotal]);
 
   return paginationRange;
 }
