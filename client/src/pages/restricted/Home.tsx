@@ -1,19 +1,25 @@
 import { Title } from '@app/components/typography';
 import { UNPUBLISHED } from '@app/constants/queryKey';
+import { getUnpublishedCourses } from '@app/services/course';
 import { CourseList } from '@course/components';
 import CourseListContext, {
   CourseListContextValue,
 } from '@course/context/CourseListContext';
-import { usePrefetchCourse, useUnpublishedCourseList } from '@course/hooks';
+import { useCourseList, usePrefetchCourse } from '@course/hooks';
 import { usePaginationQuery } from '@pagination/hooks';
 import { useFetchingNavigationProgress } from '@progress/hooks';
 
 function Home() {
-  const { currentPage, setCurrentPage, limit, setLimit } =
-    usePaginationQuery(UNPUBLISHED);
+  const { currentPage, setCurrentPage, limit, setLimit } = usePaginationQuery();
   const prefetchCourse = usePrefetchCourse();
-  const { data, isLoading, isError, error, isFetching } =
-    useUnpublishedCourseList(currentPage, setCurrentPage, limit, setLimit);
+  const { data, isLoading, isError, error, isFetching } = useCourseList({
+    getCourses: getUnpublishedCourses,
+    currentPage,
+    setCurrentPage,
+    limit,
+    setLimit,
+    filter: UNPUBLISHED,
+  });
 
   useFetchingNavigationProgress(isLoading);
   useFetchingNavigationProgress(isFetching);
@@ -46,16 +52,12 @@ function Home() {
     <div className="flex flex-col justify-center h-full space-y-8">
       <CourseListContext.Provider value={value}>
         <CourseList
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          limit={limit}
-          setLimit={setLimit}
-          pageCount={{
+          countTotal={data.count.total}
+          page={{
             total: data.page.total,
             prev: data.page.prev,
             next: data.page.next,
-          }}
-          itemCount={data.count.total}>
+          }}>
           {data.courses.map(({ id, subject, ...course }) => (
             <CourseList.Item
               key={id}

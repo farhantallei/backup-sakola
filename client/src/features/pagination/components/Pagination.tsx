@@ -4,7 +4,8 @@ import PageControl from './PageControl';
 
 interface PaginationProps {
   onPageChange: (page: number) => void;
-  totalPageCount: number;
+  countTotal: number;
+  limit: number;
   boundaryCount?: number;
   siblingCount?: number;
   currentPage: number;
@@ -14,7 +15,8 @@ interface PaginationProps {
 
 function Pagination({
   onPageChange,
-  totalPageCount,
+  countTotal,
+  limit,
   boundaryCount = 1,
   siblingCount = 1,
   currentPage,
@@ -22,7 +24,8 @@ function Pagination({
   nextPageCount,
 }: PaginationProps) {
   const paginationRange = usePagination({
-    totalPageCount,
+    countTotal,
+    limit,
     boundaryCount,
     siblingCount,
     currentPage,

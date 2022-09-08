@@ -3,7 +3,8 @@ import { Boundary, Dots, Number, Sibling } from '../types';
 import { range } from '../utils';
 
 interface PaginationParams {
-  totalPageCount: number;
+  countTotal: number;
+  limit: number;
   boundaryCount: number;
   siblingCount: number;
   currentPage: number;
@@ -17,12 +18,15 @@ type PaginationResult =
   | { type: Dots };
 
 function usePagination({
-  totalPageCount,
+  countTotal,
+  limit,
   boundaryCount,
   siblingCount,
   currentPage,
 }: PaginationParams): PaginationResult[] {
   const paginationRange = useMemo((): PaginationResult[] => {
+    const totalPageCount = Math.ceil(countTotal / limit);
+
     const totalPageNumbers = siblingCount * 2 + boundaryCount * 2 + 3;
 
     if (totalPageNumbers >= totalPageCount)
@@ -129,7 +133,7 @@ function usePagination({
       dots,
       ...rightBoundaryRange,
     ];
-  }, [siblingCount, currentPage]);
+  }, [siblingCount, currentPage, limit]);
 
   return paginationRange;
 }

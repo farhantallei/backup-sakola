@@ -2,32 +2,28 @@ import CourseListController from './CourseListController';
 import CourseListItem from './CourseListItem';
 
 interface CourseListProps {
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  limit: number;
-  setLimit: React.Dispatch<React.SetStateAction<number>>;
-  children?: React.ReactNode;
-  pageCount: {
+  countTotal: number;
+  page: {
     total: number;
     prev: number;
     next: number;
   };
-  itemCount: number;
+  children?: React.ReactNode;
 }
 
-function CourseList({ pageCount, itemCount, children }: CourseListProps) {
+function CourseList({ countTotal, page, children }: CourseListProps) {
   return (
     <div className="bg-white overflow-hidden shadow rounded-lg">
       <ul role="list" className="divide-y divide-gray-200">
         {children}
       </ul>
       <CourseListController
-        pageCount={{
-          total: pageCount.total,
-          prev: pageCount.prev,
-          next: pageCount.next,
+        countTotal={countTotal}
+        page={{
+          total: page.total,
+          prev: page.prev,
+          next: page.next,
         }}
-        itemCount={itemCount}
       />
     </div>
   );

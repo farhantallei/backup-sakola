@@ -1,14 +1,9 @@
-import { COURSES } from '@app/constants/queryKey';
-import { useUpdateEffect } from '@app/hooks';
 import { isNumeric } from '@app/utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-function usePaginationQuery<T>(filter: string) {
+function usePaginationQuery() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryClient = useQueryClient();
-
   const pageQuery = searchParams.get('page');
   const limitQuery = searchParams.get('limit');
 
@@ -41,16 +36,6 @@ function usePaginationQuery<T>(filter: string) {
   useEffect(() => {
     setLimit(limitNumber);
   }, [limitNumber]);
-
-  // FIXME: Debug me please.
-  useUpdateEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: [COURSES, { filter }, currentPage],
-    });
-    queryClient.removeQueries({
-      queryKey: [COURSES, { filter }],
-    });
-  }, [limit]);
 
   return { currentPage, setCurrentPage, limit, setLimit };
 }

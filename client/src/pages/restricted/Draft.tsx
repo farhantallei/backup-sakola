@@ -1,10 +1,11 @@
 import { Title } from '@app/components/typography';
 import { UNCATEGORIZED } from '@app/constants/queryKey';
+import { getUncategorizedCourses } from '@app/services/course';
 import { CourseList } from '@course/components';
 import CourseListContext, {
   CourseListContextValue,
 } from '@course/context/CourseListContext';
-import { usePrefetchCourse, useUncategorizedCourseList } from '@course/hooks';
+import { useCourseList, usePrefetchCourse } from '@course/hooks';
 import { usePaginationQuery } from '@pagination/hooks';
 import { useFetchingNavigationProgress } from '@progress/hooks';
 
@@ -15,11 +16,16 @@ import { useFetchingNavigationProgress } from '@progress/hooks';
 // If the url is: http://localhost:1234/draf?page=1&limit=5
 // Then we will take the limit from the query and set it to the localstorage.
 function Draft() {
-  const { currentPage, setCurrentPage, limit, setLimit } =
-    usePaginationQuery(UNCATEGORIZED);
+  const { currentPage, setCurrentPage, limit, setLimit } = usePaginationQuery();
   const prefetchCourse = usePrefetchCourse();
-  const { data, isLoading, isError, error, isFetching } =
-    useUncategorizedCourseList(currentPage, setCurrentPage, limit, setLimit);
+  const { data, isLoading, isError, error, isFetching } = useCourseList({
+    getCourses: getUncategorizedCourses,
+    currentPage,
+    setCurrentPage,
+    limit,
+    setLimit,
+    filter: UNCATEGORIZED,
+  });
 
   useFetchingNavigationProgress(isLoading);
   useFetchingNavigationProgress(isFetching);
@@ -52,16 +58,12 @@ function Draft() {
     <div className="flex flex-col justify-center h-full space-y-8">
       <CourseListContext.Provider value={value}>
         <CourseList
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          limit={limit}
-          setLimit={setLimit}
-          pageCount={{
+          countTotal={data.count.total}
+          page={{
             total: data.page.total,
             prev: data.page.prev,
             next: data.page.next,
-          }}
-          itemCount={data.count.total}>
+          }}>
           {data.courses.map(({ id, ...course }) => (
             <CourseList.Item
               key={id}

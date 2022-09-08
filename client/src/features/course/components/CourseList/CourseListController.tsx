@@ -2,15 +2,15 @@ import { useCourseListContext } from '@course/context/CourseListContext';
 import { Pagination } from '@pagination/components';
 
 function CourseListController({
-  pageCount,
-  itemCount,
+  countTotal,
+  page,
 }: {
-  pageCount: {
+  countTotal: number;
+  page: {
     total: number;
     prev: number;
     next: number;
   };
-  itemCount: number;
 }) {
   const { currentPage, setCurrentPage, limit } = useCourseListContext();
 
@@ -31,7 +31,7 @@ function CourseListController({
       <div className="flex-1 flex justify-between ss:hidden">
         <button
           type="button"
-          disabled={pageCount.prev <= 0}
+          disabled={page.prev <= 0}
           onClick={prevHandle}
           className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-300">
           Previous
@@ -39,11 +39,11 @@ function CourseListController({
         <div className="self-center text-sm text-gray-700 ">
           <span className="font-semibold">{currentPage}</span>
           {' / '}
-          <span className="font-semibold">{pageCount.total}</span>
+          <span className="font-semibold">{page.total}</span>
         </div>
         <button
           type="button"
-          disabled={pageCount.next <= 0}
+          disabled={page.next <= 0}
           onClick={nextHandle}
           className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-300">
           Next
@@ -54,25 +54,26 @@ function CourseListController({
           <p className="text-sm text-gray-700">
             Showing
             <span className="font-medium">{` ${
-              itemCount > 0 ? limit * (currentPage - 1) + 1 : 0
+              countTotal > 0 ? limit * (currentPage - 1) + 1 : 0
             } `}</span>
             to
             <span className="font-medium">{` ${Math.min(
-              itemCount,
+              countTotal,
               limit * currentPage
             )} `}</span>
             of
-            <span className="font-medium">{` ${itemCount} `}</span>
+            <span className="font-medium">{` ${countTotal} `}</span>
             results
           </p>
         </div>
         <div>
           <Pagination
             onPageChange={pageHandle}
-            totalPageCount={pageCount.total}
+            countTotal={countTotal}
+            limit={limit}
             currentPage={currentPage}
-            prevPageCount={pageCount.prev}
-            nextPageCount={pageCount.next}
+            prevPageCount={page.prev}
+            nextPageCount={page.next}
           />
         </div>
       </div>
