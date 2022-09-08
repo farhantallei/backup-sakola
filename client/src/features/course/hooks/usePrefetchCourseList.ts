@@ -63,7 +63,7 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
       prefetch('next');
     },
     data,
-    [page, limit]
+    [data, page, limit]
   );
 }
 

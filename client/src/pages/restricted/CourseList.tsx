@@ -1,7 +1,7 @@
 import { Title } from '@app/components/typography';
-import { UNCATEGORIZED } from '@app/constants/queryKey';
-import { getUncategorizedCourses } from '@app/services/course';
-import { CourseList } from '@course/components';
+import { Filter } from '@app/constants/queryKey';
+import { GetCourseListResponse, GetCoursesRequest } from '@app/types/rest';
+import { Controller, Feed } from '@course/components';
 import CourseListContext, {
   CourseListContextValue,
 } from '@course/context/CourseListContext';
@@ -17,7 +17,15 @@ import { useFetchingNavigationProgress } from '@progress/hooks';
  * Then we will take the limit from the query and set it to the localstorage.
  */
 
-function Draft() {
+interface CourseListProps<T> {
+  getCourses: (data: GetCoursesRequest) => Promise<T>;
+  filter: Filter;
+}
+
+function CourseList<T extends GetCourseListResponse>({
+  getCourses,
+  filter,
+}: CourseListProps<T>) {
   const {
     pageNumber,
     limitNumber,
@@ -28,12 +36,12 @@ function Draft() {
   } = usePaginationQuery();
   const prefetchCourse = usePrefetchCourse();
   const { data, isLoading, isError, error, isFetching } = useCourseList({
-    getCourses: getUncategorizedCourses,
+    getCourses,
     currentPage: pageNumber,
     setCurrentPage,
     limit: limitNumber,
     setLimit,
-    filter: UNCATEGORIZED,
+    filter,
   });
 
   useFetchingNavigationProgress(isFetching);
@@ -67,18 +75,33 @@ function Draft() {
   return (
     <div className="flex flex-col justify-center h-full space-y-8">
       <CourseListContext.Provider value={value}>
-        <CourseList countTotal={data.count.total} pageTotal={data.page.total}>
-          {data.courses.map(({ id, ...course }) => (
-            <CourseList.Item
-              key={id}
-              onClick={() => prefetchCourse(id)}
-              {...course}
-            />
-          ))}
-        </CourseList>
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <ul role="list" className="divide-y divide-gray-200">
+            {data.courses.map((item) => (
+              <Feed
+                key={item.id}
+                title={item.title}
+                thumbnailUrl={item.thumbnailUrl}
+                subject={item?.subject?.name}
+                level={item.level}
+                published={item.published}
+                status={item.status}
+                category={item?.subject?.category}
+                createdAt={item.createdAt}
+                updatedAt={item.updatedAt}
+                publishedAt={item.publishedAt || undefined}
+                onClick={() => prefetchCourse(item.id)}
+              />
+            ))}
+          </ul>
+          <Controller
+            countTotal={data.count.total}
+            pageTotal={data.page.total}
+          />
+        </div>
       </CourseListContext.Provider>
     </div>
   );
 }
 
-export default Draft;
+export default CourseList;

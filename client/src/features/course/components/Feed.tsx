@@ -2,15 +2,15 @@ import { Text } from '@app/components/typography';
 import { Badge } from '@app/components/ui';
 import { useTimeFormatter } from '@app/hooks';
 import { AspectRatio } from '@app/layouts';
+import { IconCirclePlus, IconPencil, IconRocket } from '@tabler/icons';
 import {
   CategoryBadge,
   HighlightBadge,
   LevelBadge,
   StatusBadge,
-} from '@course/components/badges';
-import { IconCirclePlus, IconPencil, IconRocket } from '@tabler/icons';
+} from './badges';
 
-interface CourseListItemProps {
+interface FeedProps {
   title: string;
   thumbnailUrl: string | null;
   subject?: string;
@@ -24,7 +24,7 @@ interface CourseListItemProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-function CourseListItem({
+function Feed({
   title,
   thumbnailUrl,
   subject,
@@ -36,7 +36,7 @@ function CourseListItem({
   updatedAt,
   publishedAt,
   onClick,
-}: CourseListItemProps) {
+}: FeedProps) {
   const createdDate = useTimeFormatter(createdAt);
   const updatedDate = useTimeFormatter(updatedAt);
   const publishedDate = publishedAt && useTimeFormatter(publishedAt);
@@ -109,4 +109,4 @@ function CourseListItem({
   );
 }
 
-export default CourseListItem;
+export default Feed;

@@ -41,6 +41,16 @@ export interface CourseResponse {
 export interface CourseListResponse
   extends Omit<CourseResponse, 'description'> {}
 
+export interface GetCourseListResponse extends GetCourseCountResponse {
+  courses: (Omit<CourseListResponse, 'publishedAt' | 'subject'> & {
+    publishedAt?: string;
+    subject?: {
+      name: string;
+      category: 'islam' | 'dunia';
+    } | null;
+  })[];
+}
+
 export interface UncategorizedCourseListResponse
   extends Omit<CourseListResponse, 'publishedAt' | 'subject'> {}
 

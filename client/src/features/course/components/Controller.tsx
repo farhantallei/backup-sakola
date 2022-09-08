@@ -2,13 +2,12 @@ import { useCourseListContext } from '@course/context/CourseListContext';
 import { Pagination } from '@pagination/components';
 import { useSearchParams } from 'react-router-dom';
 
-function CourseListController({
-  countTotal,
-  pageTotal,
-}: {
+interface ControllerProps {
   countTotal: number;
   pageTotal: number;
-}) {
+}
+
+function Controller({ countTotal, pageTotal }: ControllerProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { pageNumber, limitNumber, currentPage, limit } =
     useCourseListContext();
@@ -85,4 +84,4 @@ function CourseListController({
   );
 }
 
-export default CourseListController;
+export default Controller;
