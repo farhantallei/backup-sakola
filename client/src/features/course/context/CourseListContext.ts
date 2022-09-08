@@ -1,6 +1,8 @@
 import { createContext, useContext } from 'react';
 
 export interface CourseListContextValue {
+  pageNumber: number;
+  limitNumber: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   limit: number;

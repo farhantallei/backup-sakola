@@ -1,5 +1,6 @@
 import { useCourseListContext } from '@course/context/CourseListContext';
 import { Pagination } from '@pagination/components';
+import { useSearchParams } from 'react-router-dom';
 
 function CourseListController({
   countTotal,
@@ -8,18 +9,26 @@ function CourseListController({
   countTotal: number;
   pageTotal: number;
 }) {
-  const { currentPage, setCurrentPage, limit } = useCourseListContext();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { pageNumber, limitNumber, currentPage, limit } =
+    useCourseListContext();
 
   function prevHandle() {
-    setCurrentPage((currentPage) => currentPage - 1);
+    setSearchParams({
+      page: `${Math.max(1, pageNumber - 1)}`,
+      limit: `${limitNumber}`,
+    });
   }
 
   function nextHandle() {
-    setCurrentPage((currentPage) => currentPage + 1);
+    setSearchParams({
+      page: `${Math.min(pageTotal, pageNumber + 1)}`,
+      limit: `${limitNumber}`,
+    });
   }
 
   function pageHandle(page: number) {
-    setCurrentPage(page);
+    setSearchParams({ page: `${page}`, limit: `${limitNumber}` });
   }
 
   return (
@@ -64,7 +73,9 @@ function CourseListController({
         </div>
         <div>
           <Pagination
-            onPageChange={pageHandle}
+            prevHandle={prevHandle}
+            nextHandle={nextHandle}
+            pageHandle={pageHandle}
             pageTotal={pageTotal}
             currentPage={currentPage}
           />

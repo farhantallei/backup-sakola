@@ -3,7 +3,9 @@ import NavControl from './NavControl';
 import PageControl from './PageControl';
 
 interface PaginationProps {
-  onPageChange: (page: number) => void;
+  prevHandle: () => void;
+  nextHandle: () => void;
+  pageHandle: (page: number) => void;
   pageTotal: number;
   boundaryCount?: number;
   siblingCount?: number;
@@ -11,7 +13,9 @@ interface PaginationProps {
 }
 
 function Pagination({
-  onPageChange,
+  prevHandle,
+  nextHandle,
+  pageHandle,
   pageTotal,
   boundaryCount = 1,
   siblingCount = 1,
@@ -23,18 +27,6 @@ function Pagination({
     siblingCount,
     currentPage,
   });
-
-  function prevHandle() {
-    onPageChange(currentPage - 1);
-  }
-
-  function nextHandle() {
-    onPageChange(currentPage + 1);
-  }
-
-  function pageHandle(page: number) {
-    onPageChange(page);
-  }
 
   return (
     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">

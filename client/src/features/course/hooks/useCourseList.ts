@@ -1,6 +1,7 @@
 import { COURSES, Filter } from '@app/constants/queryKey';
 import { GetCourseCountResponse, GetCoursesRequest } from '@app/types/rest';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import usePrefetchCourseList from './usePrefetchCourseList';
 
 interface CourseListParams<T> {
@@ -20,15 +21,18 @@ function useCourseList<T extends GetCourseCountResponse>({
   setLimit,
   filter,
 }: CourseListParams<T>): UseQueryResult<T> {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const courseList = useQuery({
     queryKey: [COURSES, { filter }, currentPage],
     queryFn: () => getCourses({ page: currentPage, limit }),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
     staleTime: Infinity,
-    cacheTime: Infinity,
     onSuccess: (data) => {
       setCurrentPage(data.page.current);
       setLimit(data.limit);
+      setSearchParams({ page: `${data.page.current}`, limit: `${data.limit}` });
     },
   });
 

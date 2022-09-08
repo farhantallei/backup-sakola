@@ -23,21 +23,27 @@ function usePaginationQuery() {
   const [limit, setLimit] = useState(limitNumber);
 
   useEffect(() => {
-    setSearchParams(
-      { page: `${currentPage}`, limit: `${limit}` },
-      { replace: true }
-    );
-  }, [currentPage, limit]);
+    if (pageQuery == null && !!limitQuery)
+      setSearchParams({ page: '1', limit: limitQuery }, { replace: true });
 
-  useEffect(() => {
+    if (!!pageQuery && limitQuery == null)
+      setSearchParams({ page: pageQuery, limit: '4' }, { replace: true });
+
+    if (pageQuery == null && limitQuery == null)
+      setSearchParams({ page: '1', limit: '4' }, { replace: true });
+
     setCurrentPage(pageNumber);
-  }, [pageNumber]);
-
-  useEffect(() => {
     setLimit(limitNumber);
-  }, [limitNumber]);
+  }, [pageQuery, limitQuery]);
 
-  return { currentPage, setCurrentPage, limit, setLimit };
+  return {
+    pageNumber,
+    limitNumber,
+    currentPage,
+    setCurrentPage,
+    limit,
+    setLimit,
+  };
 }
 
 export default usePaginationQuery;

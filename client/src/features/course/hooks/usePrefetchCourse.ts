@@ -10,10 +10,15 @@ function usePrefetchCourse() {
   const location = useLocation();
   const queryClient = useQueryClient();
   const { closeSidebar } = useDashboardContext();
-  const { startNavigationProgress, finishNavigationProgress } =
-    useNavigationProgressContext();
+  const {
+    running,
+    startNavigationProgress,
+    resetNavigationProgress,
+    finishNavigationProgress,
+  } = useNavigationProgressContext();
 
   return async function prefetchCourse(id: string) {
+    if (running) resetNavigationProgress();
     startNavigationProgress();
     await queryClient.prefetchQuery({
       queryKey: [COURSE, id],

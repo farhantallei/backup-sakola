@@ -18,19 +18,23 @@ import {
   IconRocket,
   TablerIcon,
 } from '@tabler/icons';
+import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 function Course() {
-  const { openSidebar, toggleSidebar } = useDashboardContext();
+  const { openSidebar, closeSidebar, toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };
   const location = useLocation();
   const from =
     location.state instanceof Object ? (location.state as Location) : null;
   const { data, isLoading, isFetching, isError, error } = useCourse(courseId);
-  const createdDate = data && useTimeFormatter(data.createdAt);
-  const updatedDate = data && useTimeFormatter(data.updatedAt);
-  const publishedDate =
-    data && data.publishedAt && useTimeFormatter(data.publishedAt);
+  const createdDate = useTimeFormatter(data?.createdAt);
+  const updatedDate = useTimeFormatter(data?.updatedAt);
+  const publishedDate = useTimeFormatter(data?.publishedAt);
+
+  useEffect(() => {
+    closeSidebar();
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 min-h-full">
@@ -41,25 +45,24 @@ function Course() {
           onClick={toggleSidebar}
         />
         {isLoading || isError ? null : (
-          <div className="flex flex-row gap-2 justify-center items-center">
-            <StatusBadge status={data.status} />
-            {data.published ? (
-              <Badge variant="dot" color="amber">
-                Published
-              </Badge>
-            ) : null}
-            <CategoryBadge category={data.subject?.category} />
-            <HighlightBadge
-              createdAt={data.createdAt}
-              updatedAt={data.updatedAt}
-            />
-          </div>
+          <>
+            <div className="flex flex-row gap-2 justify-center items-center">
+              <StatusBadge status={data.status} />
+              {data.published ? (
+                <Badge variant="dot" color="amber">
+                  Published
+                </Badge>
+              ) : null}
+            </div>
+            <div className="flex flex-row gap-2 justify-center items-center">
+              <CategoryBadge category={data.subject?.category} />
+              <HighlightBadge
+                createdAt={data.createdAt}
+                updatedAt={data.updatedAt}
+              />
+            </div>
+          </>
         )}
-        <div className="col-start-3 flex flex-row justify-end">
-          {!isLoading && isFetching ? (
-            <Loader className="dark:fill-sky-600" />
-          ) : null}
-        </div>
         {/* TODO: move this button to bottom. */}
         {/* <ActionIcon Icon={IconPlus} title="Add a new class" color="gray" /> */}
       </div>

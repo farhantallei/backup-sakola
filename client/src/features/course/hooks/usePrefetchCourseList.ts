@@ -1,5 +1,5 @@
 import { COURSES, Filter } from '@app/constants/queryKey';
-import { useMountedDataEffect, useUpdateEffect } from '@app/hooks';
+import { useMountedDataEffect } from '@app/hooks';
 import { GetCourseCountResponse } from '@app/types/rest';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
@@ -23,43 +23,13 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
 }: PrefetchCourseListParams<T>) {
   const queryClient = useQueryClient();
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     queryClient.removeQueries({
       queryKey: [COURSES, { filter }],
     });
   }, [limit]);
 
-  const prefetchOnMount = useCallback(
-    (whichPage: 'prev' | 'next') => {
-      if (!data) return;
-
-      const currentPage: Record<typeof whichPage, boolean> = {
-        prev: page <= 1,
-        next: page >= data.page.total,
-      };
-
-      const siblingPage: Record<typeof whichPage, number> = {
-        prev: page - 1,
-        next: page + 1,
-      };
-
-      if (currentPage[whichPage]) return;
-
-      const siblingPageKey = [key, { filter }, siblingPage[whichPage]];
-      const siblingPageCache = queryClient.getQueryCache().find(siblingPageKey);
-
-      if (siblingPageCache) return;
-      queryClient.prefetchQuery({
-        queryKey: siblingPageKey,
-        queryFn: () => getCourses({ page: siblingPage[whichPage], limit }),
-        cacheTime: Infinity,
-        retry: 3,
-      });
-    },
-    [data, limit]
-  );
-
-  const prefetchOnPage = useCallback(
+  const prefetch = useCallback(
     (whichPage: 'prev' | 'next') => {
       if (!data) return;
 
@@ -75,32 +45,26 @@ function usePrefetchCourseList<T extends GetCourseCountResponse>({
 
       const siblingPageKey = [key, { filter }, siblingPage[whichPage]];
       const siblingPageCache = queryClient.getQueryCache().find(siblingPageKey);
-
       if (siblingPageCache) return;
+
       if (currentPage[whichPage]) {
         queryClient.prefetchQuery({
           queryKey: siblingPageKey,
           queryFn: () => getCourses({ page: siblingPage[whichPage], limit }),
-          cacheTime: Infinity,
         });
       }
     },
-    [page, limit]
+    [data, page, limit]
   );
 
   useMountedDataEffect(
     () => {
-      prefetchOnMount('prev');
-      prefetchOnMount('next');
+      prefetch('prev');
+      prefetch('next');
     },
     data,
-    [limit]
+    [page, limit]
   );
-
-  useEffect(() => {
-    prefetchOnPage('prev');
-    prefetchOnPage('next');
-  }, [page, limit]);
 }
 
 export default usePrefetchCourseList;

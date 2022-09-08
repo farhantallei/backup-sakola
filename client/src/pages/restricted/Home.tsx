@@ -10,21 +10,29 @@ import { usePaginationQuery } from '@pagination/hooks';
 import { useFetchingNavigationProgress } from '@progress/hooks';
 
 function Home() {
-  const { currentPage, setCurrentPage, limit, setLimit } = usePaginationQuery();
-  const prefetchCourse = usePrefetchCourse();
-  const { data, isLoading, isError, error, isFetching } = useCourseList({
-    getCourses: getUnpublishedCourses,
+  const {
+    pageNumber,
+    limitNumber,
     currentPage,
     setCurrentPage,
     limit,
     setLimit,
+  } = usePaginationQuery();
+  const prefetchCourse = usePrefetchCourse();
+  const { data, isLoading, isError, error, isFetching } = useCourseList({
+    getCourses: getUnpublishedCourses,
+    currentPage: pageNumber,
+    setCurrentPage,
+    limit: limitNumber,
+    setLimit,
     filter: UNPUBLISHED,
   });
 
-  useFetchingNavigationProgress(isLoading);
   useFetchingNavigationProgress(isFetching);
 
   const value: CourseListContextValue = {
+    pageNumber,
+    limitNumber,
     currentPage,
     setCurrentPage,
     limit,
@@ -60,7 +68,7 @@ function Home() {
               onClick={() => prefetchCourse(id)}
               {...course}
             />
-          )) || null}
+          ))}
         </CourseList>
       </CourseListContext.Provider>
     </div>

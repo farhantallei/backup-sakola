@@ -9,28 +9,38 @@ import { useCourseList, usePrefetchCourse } from '@course/hooks';
 import { usePaginationQuery } from '@pagination/hooks';
 import { useFetchingNavigationProgress } from '@progress/hooks';
 
-// FIXME: Save limit state to localstorage instead. But the query will controlling the state of the localstorage
-// Example:
-// The url is: http://localhost:1234/draf?page=1 or http://localhost:1234/draf
-// Then the limit will automatically get from the localstorage and page is set to default which is 1
-// If the url is: http://localhost:1234/draf?page=1&limit=5
-// Then we will take the limit from the query and set it to the localstorage.
+/** FIXME: Save limit state to localstorage instead. But the query will controlling the state of the localstorage
+ * Example:
+ * The url is: http://localhost:1234/draf?page=1 or http://localhost:1234/draf
+ * Then the limit will automatically get from the localstorage and page is set to default which is 1
+ * If the url is: http://localhost:1234/draf?page=1&limit=5
+ * Then we will take the limit from the query and set it to the localstorage.
+ */
+
 function Draft() {
-  const { currentPage, setCurrentPage, limit, setLimit } = usePaginationQuery();
-  const prefetchCourse = usePrefetchCourse();
-  const { data, isLoading, isError, error, isFetching } = useCourseList({
-    getCourses: getUncategorizedCourses,
+  const {
+    pageNumber,
+    limitNumber,
     currentPage,
     setCurrentPage,
     limit,
     setLimit,
+  } = usePaginationQuery();
+  const prefetchCourse = usePrefetchCourse();
+  const { data, isLoading, isError, error, isFetching } = useCourseList({
+    getCourses: getUncategorizedCourses,
+    currentPage: pageNumber,
+    setCurrentPage,
+    limit: limitNumber,
+    setLimit,
     filter: UNCATEGORIZED,
   });
 
-  useFetchingNavigationProgress(isLoading);
   useFetchingNavigationProgress(isFetching);
 
   const value: CourseListContextValue = {
+    pageNumber,
+    limitNumber,
     currentPage,
     setCurrentPage,
     limit,
@@ -64,7 +74,7 @@ function Draft() {
               onClick={() => prefetchCourse(id)}
               {...course}
             />
-          )) || null}
+          ))}
         </CourseList>
       </CourseListContext.Provider>
     </div>
