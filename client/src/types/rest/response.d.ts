@@ -70,6 +70,8 @@ export interface GetUnpublishedCoursesResponse extends GetCourseCountResponse {
 
 export interface GetCourseResponse extends Omit<CourseResponse, 'id'> {}
 
+export interface CreateCourseResponse extends Pick<CourseResponse, 'id'> {}
+
 export interface FastifyError {
   statusCode: number;
   error: string;

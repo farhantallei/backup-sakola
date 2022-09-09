@@ -110,3 +110,12 @@ export const GetCourseSchema = {
 };
 
 export type GetCourseTSchema = typeof GetCourseSchema;
+
+export const CreateCourseSchema = {
+  body: Type.Object({ title: CourseModel.validation.title }),
+  response: {
+    200: Type.Object({ id: CourseModel.response.id }),
+  },
+};
+
+export type CreateCourseTSchema = typeof CreateCourseSchema;

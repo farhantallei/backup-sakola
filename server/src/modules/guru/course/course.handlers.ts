@@ -1,10 +1,12 @@
 import { RouteHandlerTypebox } from '../../../types';
 import {
+  CreateCourseTSchema,
   GetCourseTSchema,
   GetUncategorizedCoursesTSchema,
   GetUnpublishedCoursesTSchema,
 } from './course.schemas';
 import {
+  createCourse,
   getCourse,
   getCourseCount,
   getUncategorizedCourses,
@@ -95,4 +97,13 @@ export const GetCourseHandler: RouteHandlerTypebox<GetCourseTSchema> = async (
     publishedAt: publishedAt?.toISOString() || null,
     ...course,
   };
+};
+
+export const CreateCourseHandler: RouteHandlerTypebox<
+  CreateCourseTSchema
+> = async (request, reply) => {
+  const { title } = request.body;
+  const authorId = request.author.id;
+
+  return await createCourse(reply, { title, authorId });
 };

@@ -12,7 +12,6 @@ function Submit({ isLoading }: SubmitProps) {
         type="submit"
         disabled={isLoading}
         className={classNames(
-          'group',
           'relative',
           'w-full',
           'flex',

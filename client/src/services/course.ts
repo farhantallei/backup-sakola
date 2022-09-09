@@ -1,4 +1,6 @@
 import {
+  CreateCourseRequest,
+  CreateCourseResponse,
   GetCourseRequest,
   GetCourseResponse,
   GetCoursesRequest,
@@ -23,4 +25,11 @@ export function getUnpublishedCourses({ page, limit }: GetCoursesRequest) {
 
 export function getCourse({ id }: GetCourseRequest) {
   return makeRequest<GetCourseResponse>(`${prefix}/${id}`);
+}
+
+export function createCourse(data: CreateCourseRequest) {
+  return makeRequest<CreateCourseResponse>(`${prefix}`, {
+    method: 'POST',
+    data,
+  });
 }

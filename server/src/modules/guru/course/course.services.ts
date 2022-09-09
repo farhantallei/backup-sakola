@@ -157,3 +157,16 @@ export async function getCourse(
     reply
   );
 }
+
+export async function createCourse(
+  reply: FastifyReply,
+  { title, authorId }: { title: string; authorId: string }
+) {
+  return await commitToDB(
+    prisma.course.create({
+      data: { title, authorId },
+      select: { id: true },
+    }),
+    reply
+  );
+}

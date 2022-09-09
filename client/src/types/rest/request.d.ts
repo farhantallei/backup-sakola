@@ -17,3 +17,7 @@ export interface GetCoursesRequest {
 export interface GetCourseRequest {
   id: string;
 }
+
+export interface CreateCourseRequest {
+  title: string;
+}

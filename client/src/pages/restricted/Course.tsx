@@ -54,7 +54,7 @@ function Course() {
                 </Badge>
               ) : null}
             </div>
-            <div className="flex flex-row gap-2 justify-center items-center">
+            <div className="flex flex-row gap-2 justify-end items-center">
               <CategoryBadge category={data.subject?.category} />
               <HighlightBadge
                 createdAt={data.createdAt}

@@ -1,11 +1,13 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { authentication } from '../../../middleware';
 import {
+  CreateCourseHandler,
   GetCourseHandler,
   GetUncategorizedCoursesHandler,
   GetUnpublishedCoursesHandler,
 } from './course.handlers';
 import {
+  CreateCourseSchema,
   GetCourseSchema,
   GetUncategorizedCoursesSchema,
   GetUnpublishedCoursesSchema,
@@ -24,5 +26,9 @@ export const courseRoutes: FastifyPluginAsyncTypebox = async (route) => {
   route.get('/:courseId', {
     schema: GetCourseSchema,
     handler: GetCourseHandler,
+  });
+  route.post('/', {
+    schema: CreateCourseSchema,
+    handler: CreateCourseHandler,
   });
 };

@@ -39,7 +39,7 @@ function Feed({
 }: FeedProps) {
   const createdDate = useTimeFormatter(createdAt);
   const updatedDate = useTimeFormatter(updatedAt);
-  const publishedDate = publishedAt && useTimeFormatter(publishedAt);
+  const publishedDate = useTimeFormatter(publishedAt);
 
   return (
     <li>
