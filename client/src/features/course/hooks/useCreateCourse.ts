@@ -17,12 +17,16 @@ function useCreateCourse() {
   return useMutation({
     mutationFn: createCourse,
     onSuccess: async ({ id }) => {
-      await queryClient.prefetchQuery({
-        queryKey: [COURSE, id],
-        queryFn: () => getCourse({ id }),
-      });
-      closeSidebar();
-      navigate(`/pelajaran/${id}`, { state: fromDashboard && location });
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: [COURSE, id],
+          queryFn: () => getCourse({ id }),
+        });
+        closeSidebar();
+        navigate(`/pelajaran/${id}`, { state: fromDashboard && location });
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 }

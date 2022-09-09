@@ -21,8 +21,12 @@ function NewCourseModal({ handleClose }: NewCourseModalProps) {
   const { mutateAsync: createCourse, isLoading, error } = useCreateCourse();
 
   async function handleCreateCourse({ title }: CreateCourseRequest) {
-    await createCourse({ title: !title ? 'Untitled course' : title });
-    handleClose();
+    try {
+      await createCourse({ title: !title ? 'Untitled course' : title });
+      handleClose();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -33,6 +37,8 @@ function NewCourseModal({ handleClose }: NewCourseModalProps) {
         submitLabel="Create"
         onSubmit={handleSubmit(handleCreateCourse)}
         onClose={handleClose}
+        onEnter={handleSubmit(handleCreateCourse)}
+        onEscape={handleClose}
         isLoading={isLoading}
         error={error}
         className="mt-4">

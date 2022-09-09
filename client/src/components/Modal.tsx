@@ -8,6 +8,8 @@ interface ModalProps {
   cancelLabel?: string;
   onSubmit?: () => void;
   onClose?: () => void;
+  onEnter?: () => void;
+  onEscape?: () => void;
   isLoading?: boolean;
   error?: unknown;
   className?: string;
@@ -20,17 +22,26 @@ function Modal({
   cancelLabel = 'Cancel',
   onSubmit,
   onClose,
+  onEnter,
+  onEscape,
   isLoading = false,
   error,
   className,
   children,
 }: ModalProps) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key === 'Escape') onEscape?.();
+    if (e.key === 'Enter') onEnter?.();
+  }
+
   return (
     <div className="relative z-10" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75" />
       <div className="fixed inset-0 z-10 overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl sm:my-8 sm:w-full sm:max-w-lg">
+          <div
+            onKeyDown={handleKeyDown}
+            className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="mt-3 text-center sm:mt-0 sm:text-left">
                 <Text size="lg" weight={600} className="text-gray-700">
