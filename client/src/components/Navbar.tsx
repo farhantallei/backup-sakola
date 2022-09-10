@@ -1,6 +1,6 @@
 import { useDashboardContext } from '@app/context/DashboardContext';
 import { useLogout } from '@auth/hooks';
-import { NewCourseModal } from '@course/components';
+import { NewCourseModal } from '@course/components/modals';
 import { IconPlus } from '@tabler/icons';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';

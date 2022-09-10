@@ -2,10 +2,11 @@ import { Modal } from '@app/components';
 import { Text } from '@app/components/typography';
 import { TextInput } from '@app/components/ui';
 import { CreateCourseRequest } from '@app/types/rest';
+import { useCreateCourse } from '@course/hooks';
 import { DevTool } from '@hookform/devtools';
+import { IconFilePlus } from '@tabler/icons';
 import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
-import { useCreateCourse } from '../hooks';
 
 interface NewCourseModalProps {
   handleClose: () => void;
@@ -34,14 +35,14 @@ function NewCourseModal({ handleClose }: NewCourseModalProps) {
       <DevTool control={control} />
       <Modal
         title="Create a new Course"
+        Icon={IconFilePlus}
         submitLabel="Create"
         onSubmit={handleSubmit(handleCreateCourse)}
         onClose={handleClose}
         onEnter={handleSubmit(handleCreateCourse)}
         onEscape={handleClose}
         isLoading={isLoading}
-        error={error}
-        className="mt-4">
+        error={error}>
         <label htmlFor="course-title">
           {errors.title && errors.title.message ? (
             <Text

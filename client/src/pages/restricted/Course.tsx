@@ -1,6 +1,7 @@
 import { Text, Title } from '@app/components/typography';
 import { ActionIcon, Badge, Divider, Loader } from '@app/components/ui';
 import { useDashboardContext } from '@app/context/DashboardContext';
+import { MoreActionsModal } from '@app/features/course/components/modals';
 import { useTimeFormatter } from '@app/hooks';
 import { AspectRatio } from '@app/layouts';
 import {
@@ -12,22 +13,29 @@ import {
 import { useCourse } from '@course/hooks';
 import {
   IconArrowsExchange,
+  IconDotsCircleHorizontal,
+  IconEdit,
   IconLayoutSidebar,
   IconPencil,
   IconPlus,
   IconRocket,
   TablerIcon,
 } from '@tabler/icons';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 function Course() {
+  const [editMode, setEditMode] = useState(false);
+  const [moreActionsModal, setMoreActionsModal] = useState(false);
   const { openSidebar, closeSidebar, toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };
   const location = useLocation();
   const from =
-    location.state instanceof Object ? (location.state as Location) : null;
-  const { data, isLoading, isFetching, isError, error } = useCourse(courseId);
+    location.state instanceof Object &&
+    location.state.hasOwnProperty('pathname')
+      ? (location.state as Location)
+      : null;
+  const { data, isLoading, isError, error } = useCourse(courseId);
   const createdDate = useTimeFormatter(data?.createdAt);
   const updatedDate = useTimeFormatter(data?.updatedAt);
   const publishedDate = useTimeFormatter(data?.publishedAt);
@@ -35,6 +43,10 @@ function Course() {
   useEffect(() => {
     closeSidebar();
   }, []);
+
+  function handleClose() {
+    setMoreActionsModal(false);
+  }
 
   return (
     <div className="flex flex-col gap-4 min-h-full">
@@ -66,26 +78,44 @@ function Course() {
         {/* TODO: move this button to bottom. */}
         {/* <ActionIcon Icon={IconPlus} title="Add a new class" color="gray" /> */}
       </div>
-      <div className="flex flex-row justify-between">
-        <div>
-          {from == null ? (
-            <Link to="/beranda" onClick={openSidebar} className="text-sky-500">
-              Home
-            </Link>
-          ) : (
-            <Link to={from} onClick={openSidebar} className="text-sky-500">
-              Back
-            </Link>
-          )}
-        </div>
+      <div className="grid grid-cols-3 items-center">
+        {from == null ? (
+          <Link to="/beranda" onClick={openSidebar} className="text-sky-500">
+            Beranda
+          </Link>
+        ) : (
+          <Link to={from} onClick={openSidebar} className="text-sky-500">
+            Kembali
+          </Link>
+        )}
+        {editMode ? (
+          <div className="justify-self-center">
+            <Badge color="amber">Edit mode</Badge>
+          </div>
+        ) : null}
         {isLoading || isError ? null : (
-          <div className="flex items-center gap-2 justify-end">
-            <button type="button" className="text-sky-500">
-              Done
-            </button>
-            <button type="button" className="text-sky-500">
-              {data.published ? 'Unpublish' : 'Publish'}
-            </button>
+          <div className="col-start-3 flex items-center justify-end">
+            {editMode ? (
+              <button
+                type="button"
+                className="text-sky-500"
+                onClick={() => setEditMode(false)}>
+                Done
+              </button>
+            ) : (
+              <>
+                <ActionIcon
+                  title="More actions"
+                  Icon={IconDotsCircleHorizontal}
+                  onClick={() => setMoreActionsModal(true)}
+                />
+                <ActionIcon
+                  title="Edit"
+                  Icon={IconEdit}
+                  onClick={() => setEditMode(true)}
+                />
+              </>
+            )}
           </div>
         )}
       </div>
@@ -124,7 +154,12 @@ function Course() {
             </div>
             <div className="flex flex-col gap-3">
               <LayoutInfo>
-                <TitleInfo title="Title" label="Edit" Icon={IconPencil} />
+                <TitleInfo
+                  title="Title"
+                  label="Edit"
+                  Icon={IconPencil}
+                  editMode={editMode}
+                />
                 <Title order={2} className="text-2xl">
                   {data.title}
                 </Title>
@@ -135,6 +170,7 @@ function Course() {
                     title="Subject"
                     label="Change"
                     Icon={IconArrowsExchange}
+                    editMode={editMode}
                   />
                   {data.subject ? (
                     <Text weight={600}>{data.subject.name}</Text>
@@ -152,12 +188,18 @@ function Course() {
                     title="Level"
                     label="Change"
                     Icon={IconArrowsExchange}
+                    editMode={editMode}
                   />
                   <LevelBadge level={data.level} />
                 </LayoutInfo>
               </div>
               <LayoutInfo>
-                <TitleInfo title="Description" label="Edit" Icon={IconPencil} />
+                <TitleInfo
+                  title="Description"
+                  label="Edit"
+                  Icon={IconPencil}
+                  editMode={editMode}
+                />
                 {data.description ? (
                   <Text className="text-gray-500">{data.description}</Text>
                 ) : (
@@ -191,6 +233,9 @@ function Course() {
               </div>
             ) : null}
           </div>
+          {moreActionsModal ? (
+            <MoreActionsModal handleClose={handleClose} />
+          ) : null}
         </>
       )}
     </div>
@@ -205,17 +250,21 @@ function TitleInfo({
   title,
   label,
   Icon,
+  editMode,
 }: {
   title: string;
   label: 'Edit' | 'Change';
   Icon: TablerIcon;
+  editMode: boolean;
 }) {
   return (
     <div className="flex flex-row gap-1 items-center">
       <Text className="text-gray-400" size="sm">
         {title}
       </Text>
-      <ActionIcon Icon={Icon} title={label} color="gray" size="sm" />
+      {editMode ? (
+        <ActionIcon Icon={Icon} title={label} color="gray" size="sm" />
+      ) : null}
     </div>
   );
 }
