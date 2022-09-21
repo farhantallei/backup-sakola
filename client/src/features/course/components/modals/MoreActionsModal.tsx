@@ -1,11 +1,16 @@
 import { Modal } from '@app/components';
 
 interface MoreActionsModalProps {
+  open: boolean;
   handleClose: () => void;
 }
 
-function MoreActionsModal({ handleClose }: MoreActionsModalProps) {
-  return <Modal title="More Actions" onClose={handleClose}></Modal>;
+function MoreActionsModal({ open, handleClose }: MoreActionsModalProps) {
+  return (
+    <Modal open={open} onClose={handleClose}>
+      Test
+    </Modal>
+  );
 }
 
 export default MoreActionsModal;

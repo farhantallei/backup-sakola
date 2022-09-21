@@ -6,7 +6,6 @@ import {
   getUncategorizedCourses,
   getUnpublishedCourses,
 } from '@app/services/course';
-import { addClassName } from '@app/utils';
 import NavigationProgressProvider from '@progress';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -17,9 +16,9 @@ function App() {
     const body = document.body;
     const root = document.getElementById('root')!;
 
-    addClassName(doc, 'bg-white');
-    addClassName(body, 'text-cyan-900');
-    addClassName(root, 'flex flex-col');
+    doc.classList.add('bg-white');
+    body.classList.add('text-cyan-900');
+    root.classList.add('flex', 'flex-col');
   }, []);
 
   return (

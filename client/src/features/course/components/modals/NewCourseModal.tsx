@@ -9,10 +9,11 @@ import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
 
 interface NewCourseModalProps {
+  open: boolean;
   handleClose: () => void;
 }
 
-function NewCourseModal({ handleClose }: NewCourseModalProps) {
+function NewCourseModal({ open, handleClose }: NewCourseModalProps) {
   const {
     control,
     register,
@@ -32,17 +33,18 @@ function NewCourseModal({ handleClose }: NewCourseModalProps) {
 
   return (
     <>
-      <DevTool control={control} />
+      {open ? <DevTool control={control} /> : null}
       <Modal
+        open={open}
         title="Create a new Course"
         Icon={IconFilePlus}
         submitLabel="Create"
         onSubmit={handleSubmit(handleCreateCourse)}
         onClose={handleClose}
-        onEnter={handleSubmit(handleCreateCourse)}
-        onEscape={handleClose}
         isLoading={isLoading}
-        error={error}>
+        error={error}
+        closeOnClickOutside={false}
+        withCloseButton={false}>
         <label htmlFor="course-title">
           {errors.title && errors.title.message ? (
             <Text

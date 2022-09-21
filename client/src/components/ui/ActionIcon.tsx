@@ -1,9 +1,11 @@
+import { RequireOnlyOne } from '@app/types/utils';
 import { TablerIcon } from '@tabler/icons';
 import classNames from 'classnames';
 
 interface ActionIconProps {
   Icon: TablerIcon;
-  title: string;
+  title?: string;
+  'aria-label'?: string;
   color?: 'gray' | 'red' | 'amber' | 'blue';
   size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl';
   iconSize?: number;
@@ -11,15 +13,18 @@ interface ActionIconProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
+type TitleOrLabel = RequireOnlyOne<ActionIconProps, 'title' | 'aria-label'>;
+
 function ActionIcon({
   Icon,
   title,
+  'aria-label': ariaLabel,
   color = 'blue',
   size = 'base',
   iconSize,
   className,
   onClick,
-}: ActionIconProps) {
+}: TitleOrLabel) {
   const colors: Record<typeof color, string> = {
     gray: 'text-gray-500 hover:bg-gray-100',
     red: 'text-red-500 hover:bg-red-100',
@@ -53,6 +58,7 @@ function ActionIcon({
     <button
       type="button"
       title={title}
+      aria-label={ariaLabel}
       onClick={onClick}
       className={classNames(
         styles.areas[size],

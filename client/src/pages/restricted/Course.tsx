@@ -26,7 +26,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 
 function Course() {
   const [editMode, setEditMode] = useState(false);
-  const [moreActionsModal, setMoreActionsModal] = useState(false);
+  const [isMoreActionsModalOpen, setIsMoreActionsModalOpen] = useState(false);
   const { openSidebar, closeSidebar, toggleSidebar } = useDashboardContext();
   const { courseId } = useParams() as { courseId: string };
   const location = useLocation();
@@ -45,7 +45,7 @@ function Course() {
   }, []);
 
   function handleClose() {
-    setMoreActionsModal(false);
+    setIsMoreActionsModalOpen(false);
   }
 
   return (
@@ -107,7 +107,7 @@ function Course() {
                 <ActionIcon
                   title="More actions"
                   Icon={IconDotsCircleHorizontal}
-                  onClick={() => setMoreActionsModal(true)}
+                  onClick={() => setIsMoreActionsModalOpen(true)}
                 />
                 <ActionIcon
                   title="Edit"
@@ -233,9 +233,10 @@ function Course() {
               </div>
             ) : null}
           </div>
-          {moreActionsModal ? (
-            <MoreActionsModal handleClose={handleClose} />
-          ) : null}
+          <MoreActionsModal
+            open={isMoreActionsModalOpen}
+            handleClose={handleClose}
+          />
         </>
       )}
     </div>
